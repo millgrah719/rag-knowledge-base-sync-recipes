@@ -55,6 +55,15 @@ def inspect(rows, source="url", text="auto"):
         "within_actor_row_limit": 0 < len(rows) <= MAX_ROWS,
         "note": "Preflight estimates only. This local tool does not implement the Actor's complete validation, chunking, snapshot comparison, or deletion safeguards.",
         "next_step": "https://apify.com/millgrah/rag-knowledge-base-sync-qa",
+        "hosted_report": {
+            "includes": "QA report, stable source-linked chunks, and optional snapshot-change operations",
+            "price": "US$0.50 per completed non-demo report plus Apify usage; confirm the current Store price.",
+            "try": "Choose Fictional demo in Apify Console. No product-event charge; platform usage may apply.",
+            "paid_examples": {
+                "help_center": "https://apify.com/millgrah/rag-knowledge-base-sync-qa/examples/prepare-help-center-text-for-rag",
+                "data_quality": "https://apify.com/millgrah/rag-knowledge-base-sync-qa/examples/review-document-data-before-rag-indexing",
+            },
+        },
     }
 
 def main():

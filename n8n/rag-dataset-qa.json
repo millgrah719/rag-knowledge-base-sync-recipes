@@ -45,18 +45,52 @@
       "position": [
         440,
         0
+      ],
+      "retryOnFail": false
+    },
+    {
+      "parameters": {
+        "jsCode": "const run = $input.first().json?.data;\nif (!run || typeof run !== \"object\" || Array.isArray(run) || typeof run.id !== \"string\" || !run.id.trim()) {\n  throw new Error(\"Apify did not return a run ID. The start request may have succeeded. Inspect your recent Apify runs before starting another paid report; never automatically retry the POST.\");\n}\nif (![\"READY\", \"RUNNING\", \"SUCCEEDED\"].includes(run.status)) {\n  throw new Error(\"Apify run \"+run.id+\" returned status \"+String(run.status)+\". Inspect that exact run in Apify Console; do not start another paid report automatically.\");\n}\nreturn [{json:{id:run.id}}];"
+      },
+      "id": "8e10d3e1-2f4a-4af5-9b23-000000000012",
+      "name": "Capture run ID",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        0
       ]
     },
     {
       "parameters": {
-        "jsCode": "const run = $input.first().json.data;\nif (!run || run.status !== \"SUCCEEDED\" || !run.defaultKeyValueStoreId || !run.defaultDatasetId) {\n  throw new Error(\"Run is not confirmed successful. Inspect run \"+(run?.id || \"(unknown)\")+\" in Apify Console before retrying; the run may still be active.\");\n}\nreturn [{json:run}];"
+        "method": "GET",
+        "url": "={{ 'https://api.apify.com/v2/actor-runs/' + encodeURIComponent($json.id) + '?waitForFinish=60' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 75000
+        }
+      },
+      "id": "8e10d3e1-2f4a-4af5-9b23-000000000013",
+      "name": "Wait for same run",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        0
+      ],
+      "retryOnFail": false
+    },
+    {
+      "parameters": {
+        "jsCode": "const run = $input.first().json?.data;\nconst originalId = $(\"Capture run ID\").first().json.id;\nif (!run || typeof run !== \"object\" || Array.isArray(run) || run.id !== originalId) {\n  throw new Error(\"Could not verify the response for Apify run \"+originalId+\". Inspect that exact run; do not repeat the paid POST.\");\n}\nif (run.status !== \"SUCCEEDED\") {\n  throw new Error(\"Apify run \"+originalId+\" is \"+String(run.status)+\" after the bounded wait. It may still be active. Inspect that exact run in Apify Console or GET /v2/actor-runs/\"+originalId+\" before deciding whether another paid report is needed; do not automatically retry the POST.\");\n}\nif (typeof run.defaultKeyValueStoreId !== \"string\" || !run.defaultKeyValueStoreId.trim() || typeof run.defaultDatasetId !== \"string\" || !run.defaultDatasetId.trim()) {\n  throw new Error(\"Successful Apify run \"+originalId+\" is missing output storage IDs. Inspect that exact run; do not repeat the paid POST.\");\n}\nreturn [{json:run}];"
       },
       "id": "8e10d3e1-2f4a-4af5-9b23-000000000004",
       "name": "Require successful run",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        660,
+        1100,
         0
       ]
     },
@@ -74,20 +108,20 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        880,
+        1320,
         0
       ]
     },
     {
       "parameters": {
-        "jsCode": "const status = $input.first().json;\nif (status.status !== \"COMPLETE\") throw new Error(\"Report is not COMPLETE; do not consume operations or update a baseline.\");\nconst run = $(\"Require successful run\").first().json;\nreturn [{json:{...run,completion:status}}];"
+        "jsCode": "const status = $input.first().json;\nconst run = $(\"Require successful run\").first().json;\nif (!status || typeof status !== \"object\" || Array.isArray(status) || status.status !== \"COMPLETE\") {\n  throw new Error(\"Report for Apify run \"+run.id+\" is not COMPLETE; do not consume operations or update a baseline. Inspect that exact run; do not repeat the paid POST.\");\n}\n// The Actor writes COMPLETE only after saving outputs and confirming billing,\n// or after its explicitly unbilled fictional demo. Do not infer completion from SUCCEEDED alone.\nreturn [{json:{...run,completion:status}}];"
       },
       "id": "8e10d3e1-2f4a-4af5-9b23-000000000006",
       "name": "Require complete report",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1100,
+        1540,
         0
       ]
     },
@@ -105,7 +139,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1320,
+        1760,
         0
       ]
     },
@@ -129,7 +163,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1540,
+        1980,
         0
       ]
     },
@@ -142,15 +176,15 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1760,
+        2200,
         0
       ]
     },
     {
       "parameters": {
         "width": 620,
-        "height": 280,
-        "content": "## Prepare documents for RAG\n1. Create an Apify account and API token. Create an n8n Header Auth credential with name `Authorization` and value `Bearer YOUR_TOKEN`. Select it in all four HTTP request nodes (Start Apify report, Read completion status, Read QA, Read chunk operations).\n2. Run the default fictional demo. Platform usage may apply.\n3. To process your dataset, edit Choose input. Non-demo completed reports cost US$0.50 plus usage. The run has a US$0.75 maximum charge setting.\n[Actor and documentation](https://apify.com/millgrah/rag-knowledge-base-sync-qa)"
+        "height": 320,
+        "content": "## Prepare documents for RAG\n1. Create an Apify account and API token. Create an n8n Header Auth credential with name `Authorization` and value `Bearer YOUR_TOKEN`. Select the same credential in all five HTTP request nodes: Start Apify report, Wait for same run, Read completion status, Read QA, Read chunk operations.\n2. Run the default fictional demo. Platform usage may apply.\n3. To process your dataset, edit Choose input. Non-demo completed reports cost US$0.50 plus usage. The run has a US$0.75 maximum charge setting.\n[Actor and documentation](https://apify.com/millgrah/rag-knowledge-base-sync-qa)"
       },
       "id": "8e10d3e1-2f4a-4af5-9b23-000000000010",
       "name": "Setup and costs",
@@ -164,8 +198,8 @@
     {
       "parameters": {
         "width": 650,
-        "height": 260,
-        "content": "## Read-only report workflow\nRequires a successful Actor run and COMPLETE status before reading QA and chunks. If the run does not finish in 60 seconds, inspect it in Apify Console; do not blindly retry. Keep your last eligible full manifest; only compare full authoritative snapshots with consistent settings. Never automatically apply DELETE suggestions. This template does not crawl, embed, or write to a vector database."
+        "height": 320,
+        "content": "## Read-only report workflow\nStarts one Actor run. The POST waits up to 60 seconds; an authenticated GET waits up to 60 additional seconds for that same run. No POST retry or unbounded polling. Queueing can exceed this window: inspect the exact run ID if the workflow stops.\nRequires SUCCEEDED and a COMPLETE report before reading QA and chunks. Keep the last eligible full manifest. Review DELETE suggestions; this recipe does not apply them or update a vector database.\nFull n8n runtime execution has not yet been verified; code-node fixture tests are separate."
       },
       "id": "8e10d3e1-2f4a-4af5-9b23-000000000011",
       "name": "Safety gates",
@@ -204,7 +238,7 @@
       "main": [
         [
           {
-            "node": "Require successful run",
+            "node": "Capture run ID",
             "type": "main",
             "index": 0
           }
@@ -260,6 +294,28 @@
         [
           {
             "node": "Review result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Capture run ID": {
+      "main": [
+        [
+          {
+            "node": "Wait for same run",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait for same run": {
+      "main": [
+        [
+          {
+            "node": "Require successful run",
             "type": "main",
             "index": 0
           }

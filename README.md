@@ -1,14 +1,36 @@
-# Prepare RAG knowledge-base data with Apify and n8n
+# Check and prepare RAG datasets before indexing
 
-A practical integration for AI agencies, support-chatbot builders and document ingestion pipelines. If you already collect help-center or documentation text, this recipe turns it into stable, source-linked chunks and a quality report before you embed or index it.
+For developers and AI agencies who already have documentation text or an Apify crawler dataset. Review missing text, duplicate rows and conflicting sources, then export stable, source-linked chunks for your own indexing workflow.
 
-**[Try the RAG Knowledge Base Sync & QA Actor](https://apify.com/millgrah/rag-knowledge-base-sync-qa)** · [Help-center example](https://apify.com/millgrah/rag-knowledge-base-sync-qa/examples/prepare-help-center-text-for-rag) · [Data-quality example](https://apify.com/millgrah/rag-knowledge-base-sync-qa/examples/review-document-data-before-rag-indexing)
+**US$0.50 per completed non-demo report, plus Apify platform usage.** Each report accepts up to 500 source rows. You receive a QA report, chunk operations and a manifest for later snapshot comparisons.
+
+**[Open RAG Knowledge Base Sync & QA](https://apify.com/millgrah/rag-knowledge-base-sync-qa)**
+
+## Try it directly in Apify
+
+An Apify account is required. You can try the Actor in Apify Console without installing Python or n8n and without creating an API token.
+
+1. Open the Actor above and choose its **Fictional demo** input mode.
+2. Start the demo and review its QA report and output dataset. The sample includes a repeated source row; the verified demo produces two UPSERT chunks and removes one duplicate row, with no rejected rows or deletion suggestions.
+3. For your own report, select an existing dataset you can access or supply inline source records. Use a stable source key such as `url` and the corresponding `text` or `markdown`.
+4. Review the output before passing it to your embedding or indexing tools. Leave `completeSnapshot` false for a first trial with partial data.
+
+**Demo pricing:** Fictional demo mode has no product-event charge; platform usage may apply. **Dataset and inline modes are paid**, including the example configurations below. Confirm the current Store price before starting a paid run.
+
+### Choose an example
+
+| Your use case | Open the configured example | What to inspect |
+|---|---|---|
+| Prepare help-center text | [Help-center example](https://apify.com/millgrah/rag-knowledge-base-sync-qa/examples/prepare-help-center-text-for-rag) | Source-linked chunks and removal of an exact repeated row |
+| Check problematic records before indexing | [Data-quality example](https://apify.com/millgrah/rag-knowledge-base-sync-qa/examples/review-document-data-before-rag-indexing) | Rejected records, conflicting sources and the QA summary |
+
+The Actor processes supplied text. It does not crawl websites, create embeddings or update a vector database.
 
 ## Free offline data-quality check
 
 Before paying for a full sync report, check a local JSON export for missing fields, duplicate rows, conflicting source identifiers and common input-limit problems.
 
-[Download the Python preflight script](tools/rag_preflight.py). Requires Python 3; no dependencies, API key, signup, network requests or uploaded data.
+[Download the Python preflight script](https://raw.githubusercontent.com/millgrah719/rag-knowledge-base-sync-recipes/main/tools/rag_preflight.py) · [View source](tools/rag_preflight.py). Requires Python 3; no dependencies, API key, signup, network requests or uploaded data.
 
 ```bash
 python3 tools/rag_preflight.py --demo
@@ -21,24 +43,14 @@ For custom fields, use `--source-field source_id --text-field content`. This dia
 
 When crawler output contains repeated source rows, missing text or conflicting versions of the same source, sending everything straight into an embedding pipeline can create avoidable rework. This Actor prepares supplied text deterministically, preserves provenance and exposes a QA report and optional snapshot change operations. It does not scrape websites, generate embeddings or modify a vector database.
 
-```
-Existing crawler dataset or JSON records
-       ↓
-RAG Knowledge Base Sync & QA
-       ↓
-Successful run + COMPLETE status check
-       ↓
-QA report + stable UPSERT chunks + reviewable DELETE suggestions
-       ↓
-Your own indexing workflow
-```
+Supply existing crawler data or JSON records, wait for a successful run and a `COMPLETE` report, then review the QA, UPSERT chunks and any DELETE suggestions before using them in your own indexing workflow.
 
 ## n8n workflow (importable JSON)
 
-[Download the workflow](n8n/rag-dataset-qa.json). Import the JSON into your n8n instance. This is an independently authored integration recipe, not an official n8n or Apify template.
+[Download the workflow JSON](https://raw.githubusercontent.com/millgrah719/rag-knowledge-base-sync-recipes/main/n8n/rag-dataset-qa.json) · [View source](n8n/rag-dataset-qa.json). Import the JSON into your n8n instance. This is an independently authored integration recipe, not an official n8n or Apify template.
 
 1. Create an Apify account and an API token. In n8n create a **Header Auth** credential with header name `Authorization` and value `Bearer YOUR_APIFY_TOKEN`. Never paste your token into the workflow JSON.
-2. Select the credential in all four HTTP Request nodes: Start Apify report, Read completion status, Read QA and Read chunk operations.
+2. Select the credential in all five HTTP Request nodes: Start Apify report, Wait for same run, Read completion status, Read QA and Read chunk operations.
 3. Execute the manual trigger with the default fictional demo. The expected output is two UPSERT chunks, no deletion suggestions, and a QA report with one duplicate row removed and zero rejected rows.
 4. To use your own Apify dataset, replace the JSON returned in **Choose input** with the object below. The dataset must be accessible to your Apify account and contain a stable source key and text. Non-demo billing applies.
 5. Review QA and deletion suggestions before connecting the result to your embedding/indexing tools. The workflow is inactive by default.
@@ -56,7 +68,7 @@ return [{json: {
 }}];
 ```
 
-The API call waits up to 60 seconds. If a run is not confirmed successful, the workflow stops. Inspect that run in Apify Console before retrying; the run may still be active. Do not turn on automatic POST retries.
+The initial request waits up to 60 seconds. The workflow then reads that same run with an additional wait of up to 60 seconds, without starting another report. It proceeds only when the run succeeds and the report is COMPLETE. Queueing can exceed this bounded wait. If the workflow stops, inspect the exact run ID before deciding whether another paid report is needed. Do not turn on automatic POST retries.
 
 ## Connect directly after Website Content Crawler
 

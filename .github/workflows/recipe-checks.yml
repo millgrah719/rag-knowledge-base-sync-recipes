@@ -1,0 +1,35 @@
+name: Recipe checks and public availability
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '23 13 * * *'
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test workflow code
+        run: node tests/workflow.test.mjs
+      - name: Confirm the public Actor is available
+        run: |
+          python3 - <<'PY'
+          import json, urllib.request, os, datetime
+          url = 'https://api.apify.com/v2/actors/ttX2wguGh2oSOsfxF'
+          with urllib.request.urlopen(url, timeout=20) as response:
+              actor = json.load(response)['data']
+          if not actor.get('isPublic'):
+              raise SystemExit('Actor is not public')
+          stats = actor.get('stats', {})
+          metrics = {k: stats.get(k) for k in ('totalRuns','totalUsers','totalUsers7Days','totalUsers30Days','bookmarkCount','actorReviewCount')}
+          report = ['## Public Actor check', '', 'Time: '+datetime.datetime.now(datetime.timezone.utc).isoformat(), '', 'Actor is public.', '', '| Public metric | Value |','|---|---:|']
+          report += ['| '+k+' | '+str(v if v is not None else 'Unavailable')+' |' for k,v in metrics.items()]
+          report += ['', 'These aggregate public counts include nonpaying users and owner tests. They are not sales, paying-customer counts or creator earnings. No Actor run was started and no Apify token was used.']
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
+              summary.write('\n'.join(report)+'\n')
+          print('\n'.join(report))
+          PY

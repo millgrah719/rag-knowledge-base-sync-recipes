@@ -4,6 +4,19 @@ A practical integration for AI agencies, support-chatbot builders and document i
 
 **[Try the RAG Knowledge Base Sync & QA Actor](https://apify.com/millgrah/rag-knowledge-base-sync-qa)** · [Help-center example](https://apify.com/millgrah/rag-knowledge-base-sync-qa/examples/prepare-help-center-text-for-rag) · [Data-quality example](https://apify.com/millgrah/rag-knowledge-base-sync-qa/examples/review-document-data-before-rag-indexing)
 
+## Free offline data-quality check
+
+Before paying for a full sync report, check a local JSON export for missing fields, duplicate rows, conflicting source identifiers and common input-limit problems.
+
+[Download the Python preflight script](tools/rag_preflight.py). Requires Python 3; no dependencies, API key, signup, network requests or uploaded data.
+
+```bash
+python3 tools/rag_preflight.py --demo
+python3 tools/rag_preflight.py documents.json
+```
+
+For custom fields, use `--source-field source_id --text-field content`. This diagnostic is deliberately limited: it does not generate chunks, apply changes, compare snapshots or reproduce the Actor's full validation. Use the [Apify Actor](https://apify.com/millgrah/rag-knowledge-base-sync-qa) for production reports, stable chunks and repeatable synchronization.
+
 ## What problem does this solve?
 
 When crawler output contains repeated source rows, missing text or conflicting versions of the same source, sending everything straight into an embedding pipeline can create avoidable rework. This Actor prepares supplied text deterministically, preserves provenance and exposes a QA report and optional snapshot change operations. It does not scrape websites, generate embeddings or modify a vector database.

@@ -6,18 +6,19 @@ on:
       - '.github/workflows/integration-checks.yml'
       - 'tools/**'
       - 'n8n/**'
+      - 'tests/test_public_demand_review.py'
   schedule:
     - cron: '23 14 * * *'
   workflow_dispatch:
 permissions:
   contents: read
-concurrency:
-  group: integration-checks
-  cancel-in-progress: true
 jobs:
   check:
     runs-on: ubuntu-24.04
     timeout-minutes: 3
+    concurrency:
+      group: integration-checks
+      cancel-in-progress: true
     steps:
       - name: Checkout public recipe source at this revision
         shell: bash
@@ -68,9 +69,29 @@ jobs:
                       "- No paid API requests or Actor runs were made.\n"
                       "- This does not verify customer sales, quotas, payment processing, or payouts.\n")
           PY
-      - name: Discover relevant public developer questions
+  demand_review:
+    if: >-
+      github.repository == 'millgrah719/rag-knowledge-base-sync-recipes' &&
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    permissions:
+      contents: write
+    concurrency:
+      group: demand-review-queue
+      cancel-in-progress: false
+    steps:
+      - name: Checkout trusted main revision without persisted credentials
+        shell: bash
+        run: |
+          git init
+          git fetch --depth=1 https://github.com/millgrah719/rag-knowledge-base-sync-recipes.git "$GITHUB_SHA"
+          git checkout --detach FETCH_HEAD
+      - name: Test queue classification and guarded persistence offline
+        run: python3 tools/public_demand_review.py --self-test
+      - name: Collect public problems and update the isolated review queue
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: |
-          python3 tools/public_demand_review.py --self-test
-          python3 tools/public_demand_review.py
+        run: python3 tools/public_demand_review.py --publish
+

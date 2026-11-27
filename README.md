@@ -1,51 +1,72 @@
-# Check and prepare RAG datasets before indexing
+# Check recurring help-center imports before indexing
 
-For developers and AI agencies who already have documentation text or an Apify crawler dataset. Review missing text, duplicate rows and conflicting sources, then export stable, source-linked chunks for your own indexing workflow.
+For AI agency developers who already use Apify datasets to maintain client support chatbots. Check each new documentation snapshot for missing text, conflicting source records, repeated rows and supported source-error metadata before handing it to your existing indexing workflow.
 
-**US$0.50 per completed non-demo report, plus Apify platform usage.** Each report accepts up to 500 source rows. You receive a QA report, chunk operations and a manifest for later snapshot comparisons.
+**US$0.50 per completed non-demo report, plus Apify platform usage. Up to 500 input rows per report.** No external AI model is required.
 
-**[Open RAG Knowledge Base Sync & QA](https://apify.com/millgrah/rag-knowledge-base-sync-qa)**
+**[Try RAG Knowledge Base Sync & QA](https://apify.com/millgrah/rag-knowledge-base-sync-qa)** · **[Set up recurring dataset checks](docs/recurring-documentation-checks.md)**
 
-## Try it directly in Apify
+| You already have | You receive | Your workflow controls |
+| --- | --- | --- |
+| Documentation text in an authorized Apify dataset | A QA report with row-level findings and a readiness decision | Whether the supplied dataset represents the whole source |
+| Stable source identifiers and `markdown` or `text` | Source-linked chunks with stable IDs | Embedding and indexing at your destination |
+| A new full snapshot and the last accepted manifest | `UPSERT` operations and guarded `DELETE` suggestions | Applying reviewed changes and advancing the accepted baseline |
 
-An Apify account is required. You can try the Actor in Apify Console without installing Python or n8n and without creating an API token.
+The Actor processes supplied records. It does not crawl websites, create embeddings or write to a vector database. A report can finish successfully while blocking an indexing update.
 
-1. Open the Actor above and choose its **Fictional demo** input mode.
-2. Start the demo and review its QA report and output dataset. The sample includes a repeated source row; the verified demo produces two UPSERT chunks and removes one duplicate row, with no rejected rows or deletion suggestions.
-3. For your own report, select an existing dataset you can access or supply inline source records. Use a stable source key such as `url` and the corresponding `text` or `markdown`.
-4. Review the output before passing it to your embedding or indexing tools. Leave `completeSnapshot` false for a first trial with partial data.
+## 1. Try the fictional demo
 
-**Demo pricing:** Fictional demo mode has no product-event charge; platform usage may apply. **Dataset and inline modes are paid**, including the example configurations below. Confirm the current Store price before starting a paid run.
+An Apify account is required. Open the Actor in Apify Console and choose **Fictional demo**. No Python installation, n8n instance or API token is needed for this Console trial.
 
-### Choose an example
+Start the demo and open **Quality report**, **Chunk operations**, **Sync manifest** and **Completion status**. The verified sample produces two UPSERT chunks, removes one duplicate source row and has no rejected rows or deletion suggestions. Its readiness decision stays `REVIEW_REQUIRED` because fictional data is preview-only.
 
-| Your use case | Open the configured example | What to inspect |
-|---|---|---|
-| Prepare help-center text | [Help-center example](https://apify.com/millgrah/rag-knowledge-base-sync-qa/examples/prepare-help-center-text-for-rag) | Source-linked chunks and removal of an exact repeated row |
-| Check problematic records before indexing | [Data-quality example](https://apify.com/millgrah/rag-knowledge-base-sync-qa/examples/review-document-data-before-rag-indexing) | Rejected records, conflicting sources and the QA summary |
+**Demo mode has no product-event charge; platform usage may apply.** Dataset and inline modes are paid, including the configured examples below. The Store's displayed price is authoritative.
 
-The Actor processes supplied text. It does not crawl websites, create embeddings or update a vector database.
+## 2. Check an existing dataset
 
-## Free offline data-quality check
+Choose **Existing Apify dataset**, select a source dataset your account can access, and grant read access. Use a stable source key such as `url`; `textField: "auto"` prefers non-empty `markdown` and falls back to `text`.
 
-Before paying for a full sync report, check a local JSON export for missing fields, duplicate rows, conflicting source identifiers and common input-limit problems.
+For an initial inspection of partial data, use:
 
-[Download the Python preflight script](https://raw.githubusercontent.com/millgrah719/rag-knowledge-base-sync-recipes/main/tools/rag_preflight.py) · [View source](tools/rag_preflight.py). Requires Python 3; no dependencies, API key, signup, network requests or uploaded data.
-
-```bash
-python3 tools/rag_preflight.py --demo
-python3 tools/rag_preflight.py documents.json
+```json
+{
+  "inputMode": "dataset",
+  "datasetId": "YOUR_DATASET_ID",
+  "corpusId": "client-help-center",
+  "sourceField": "url",
+  "textField": "auto",
+  "chunkChars": 1800,
+  "overlapChars": 150,
+  "completeSnapshot": false
+}
 ```
 
-For custom fields, use `--source-field source_id --text-field content`. This diagnostic is deliberately limited: it does not generate chunks, apply changes, compare snapshots or reproduce the Actor's full validation. Use the [Apify Actor](https://apify.com/millgrah/rag-knowledge-base-sync-qa) for production reports, stable chunks and repeatable synchronization.
+Replace the dataset ID with the real ID. Preserve supported HTTP status and error metadata from the source records. A non-empty HTTP error page can still be rejected when its failure is recorded in that metadata.
 
-## What problem does this solve?
+Wait for a successful run and a `COMPLETE` report, then inspect QA and the prepared operations. `COMPLETE` means report delivery finished. The separate `downstreamReady` decision determines whether the supplied records are eligible for handoff. Partial reports remain review-only. If you have already verified that the dataset is the entire authoritative corpus, follow the full-snapshot steps in the recurring guide.
 
-When crawler output contains repeated source rows, missing text or conflicting versions of the same source, sending everything straight into an embedding pipeline can create avoidable rework. This Actor prepares supplied text deterministically, preserves provenance and exposes a QA report and optional snapshot change operations. It does not scrape websites, generate embeddings or modify a vector database.
+| Inspect a worked example | What it demonstrates |
+| --- | --- |
+| [Help-center example](https://apify.com/millgrah/rag-knowledge-base-sync-qa/examples/prepare-help-center-text-for-rag) | Source-linked chunks and removal of an exact repeated row |
+| [Data-quality example](https://apify.com/millgrah/rag-knowledge-base-sync-qa/examples/review-document-data-before-rag-indexing) | Rejected records, conflicting source identifiers and the QA summary |
 
-Supply existing crawler data or JSON records, wait for a successful run and a `COMPLETE` report, then review the QA, UPSERT chunks and any DELETE suggestions. `COMPLETE` means report production finished; it does not mean the supplied data is approved for indexing.
+## 3. Run another check when documentation changes
 
-## n8n workflow (importable JSON)
+Keep one stable corpus configuration for each client collection. On the next refresh, pass the **new snapshot's dataset ID** and, when comparing changes, the **last successfully applied full report's manifest-store ID**.
+
+The [recurring documentation guide](docs/recurring-documentation-checks.md) covers the first accepted baseline, native Apify integration with an existing collection workflow, readiness decisions, failed updates and when to advance the baseline. It uses your existing datasets and destination workflow; no additional hosted service is required for the report.
+
+Run when there is a new snapshot to check or corrected input to review. Repeatedly scheduling an unchanged historical dataset still creates billable completed reports, even when there are zero change operations.
+
+## Compare snapshots safely
+
+For a complete authoritative first snapshot, set `completeSnapshot: true` only after verifying source completeness. After the run succeeds, confirm `SYNC_STATUS.status` is `COMPLETE`, inspect QA, and require `downstreamReady: true` in both QA and SYNC_STATUS for an automatic handoff. The manifest must be complete and baseline-eligible. Older reports without the approval contract require manual review.
+
+Review `DELETE` suggestions before applying them. Preserve the candidate run's default key-value store ID as the next `previousManifestStoreId` **only after the destination confirms all UPSERTs and reviewed DELETEs were accepted**. Until then, keep the previous baseline. Keep the corpus ID, field mappings and chunk settings the same between comparisons. The n8n workflow exposes a candidate store ID but leaves `baseline.commitAllowed` and `baseline.updated` false because it has no destination acknowledgement or persistence step.
+
+A report with rejected input rows or partial input cannot replace the previous accepted full baseline. Do not apply partial-batch operations between full snapshots while retaining an older baseline: changed chunk IDs from the partial update can become untracked and survive later cleanup. This recipe keeps partial batches review-only. An unchanged full snapshot can return zero chunk operations.
+
+## Optional workflow for teams already using n8n
 
 [Download the workflow JSON](https://raw.githubusercontent.com/millgrah719/rag-knowledge-base-sync-recipes/main/n8n/rag-dataset-qa.json) · [View source](n8n/rag-dataset-qa.json). Import the JSON into your n8n instance. This is an independently authored integration recipe, not an official n8n or Apify template.
 
@@ -74,73 +95,45 @@ The initial request waits up to 60 seconds. The workflow then reads that same ru
 
 Read the [handoff and validation contract](docs/n8n-validation.md) before attaching a destination. The contract approves preparation of supplied records only; it cannot establish whether an upstream crawl captured the whole source.
 
-## Connect directly after Website Content Crawler
+## Free offline data-quality check
 
-In the upstream Actor's Integrations tab, add RAG Knowledge Base Sync & QA as a target when the crawler succeeds. Grant the target read access to the source dataset. The target input can use:
+Before paying for a full sync report, check a local JSON export for missing fields, duplicate rows, conflicting source identifiers and common input-limit problems.
 
-```json
-{
-  "inputMode": "dataset",
-  "datasetId": "{{resource.defaultDatasetId}}",
-  "corpusId": "my-help-center",
-  "completeSnapshot": false
-}
+[Download the Python preflight script](https://raw.githubusercontent.com/millgrah719/rag-knowledge-base-sync-recipes/main/tools/rag_preflight.py) · [View source](tools/rag_preflight.py). Requires Python 3; no dependencies, API key, signup, network requests or uploaded data.
+
+```bash
+python3 tools/rag_preflight.py --demo
+python3 tools/rag_preflight.py documents.json
 ```
 
-This is the native Apify integration input, not an n8n expression. This partial-data example produces a report for review. A partial or failed crawl must not be treated as a complete authoritative snapshot.
+For custom fields, use `--source-field source_id --text-field content`. This diagnostic is deliberately limited: it does not generate chunks, apply changes, compare snapshots or reproduce the Actor's full validation. Use the [Apify Actor](https://apify.com/millgrah/rag-knowledge-base-sync-qa) for production reports, stable chunks and repeatable synchronization.
 
-## Compare snapshots safely
+## Costs and processing limits
 
-For a complete authoritative first snapshot, set `completeSnapshot: true` only after verifying source completeness. After the run succeeds, confirm `SYNC_STATUS.status` is `COMPLETE`, inspect QA, and require `downstreamReady: true` in both QA and SYNC_STATUS for an automatic handoff. The manifest must be complete and baseline-eligible. Older reports without the approval contract require manual review.
+- Fictional demo: no product-event charge; Apify platform usage may apply.
+- Completed non-demo report: **US$0.50 plus Apify platform usage**, subject to the current Store price. One report is one batch, not one document or chunk.
+- An unchanged snapshot or a completed report with rejected rows still counts as a report. Empty or entirely rejected input fails before the product event; platform usage may still accrue.
+- The optional n8n recipe specifies a US$0.75 maximum run charge, 256 MB memory and a 90-second timeout. Check your account's own usage limits and the options of any other run you start.
 
-Review `DELETE` suggestions before applying them. Preserve the candidate run's default key-value store ID as the next `previousManifestStoreId` **only after the destination confirms all UPSERTs and reviewed DELETEs were accepted**. Until then, keep the previous baseline. Keep the corpus ID, field mappings and chunk settings the same between comparisons. The n8n workflow exposes a candidate store ID but leaves `baseline.commitAllowed` and `baseline.updated` false because it has no destination acknowledgement or persistence step.
+| Limit | Maximum or permitted range |
+| --- | ---: |
+| Input rows per report | 500 |
+| Characters per document | 120,000 |
+| Combined input text | 6,000,000 UTF-8 bytes |
+| Chunks per snapshot | 8,000 |
+| Characters per chunk | 250–5,000 |
+| Overlap characters | 0–800; strictly less than half the chunk size |
 
-A report with rejected input rows or partial input cannot replace the previous accepted full baseline. Do not apply partial-batch operations between full snapshots while retaining an older baseline: changed chunk IDs from the partial update can become untracked and survive later cleanup. This recipe keeps partial batches review-only. An unchanged full snapshot can return zero chunk operations.
-
-## Costs and limits
-
-- Fictional demo: no product-event charge; platform usage may apply.
-- Non-demo: US$0.50 per completed report plus Apify usage, subject to the Store's displayed pricing.
-- The workflow specifies a US$0.75 maximum run charge, 256 MB memory, and a 90-second timeout. Check your account's own usage limits as well.
-- Maximum 500 input rows per report, 120,000 characters per document, 6 MB of input text, and 8,000 chunks per snapshot. Character chunks are not model token counts.
-- Use authorized data only. No external model credentials are needed.
+Character chunks are not model-specific token counts. Use authorized data only and grant access only to the selected source dataset and previous manifest store. No external model credentials are required.
 
 ## Validation and feedback
 
-Live Actor checks of build 0.1.1 on November 26, 2026 verified the fictional demo and a mixed inline report containing a recorded HTTP 503 failure. Earlier Actor releases have had live demo, paid-report and dataset-comparison checks. This workflow's exported JavaScript is tested along its connection graph with mocked HTTP responses, including rejected records, partial input, older Actor output, manifest disagreement and demo isolation. Full import and execution in a live n8n instance have not been verified. These checks do not establish customer sales or destination delivery. Start with the fictional demo and report reproducible issues using the [Actor's Issues tab](https://apify.com/millgrah/rag-knowledge-base-sync-qa/issues). Do not include customer data or credentials.
+Live Actor checks of build 0.1.1 on November 26, 2026 verified the fictional demo and a mixed inline report containing a recorded HTTP 503 failure. Earlier releases have had live demo, paid-report and dataset-comparison checks.
 
-Questions about reducing re-embedding work or maintaining multiple client knowledge bases are welcome. Try the demo first, then use a real dataset when ready.
+The optional n8n workflow's exported JavaScript is tested along its connection graph with mocked HTTP responses, including rejected records, partial input, older Actor output, manifest disagreement and demo isolation. Full import and execution in a live n8n instance have not been verified. A destination integration must be checked separately before it applies changes or advances a baseline.
 
-## Build a product-catalog knowledge base
+For reproducible problems, use the [Actor's Issues tab](https://apify.com/millgrah/rag-knowledge-base-sync-qa/issues). Include a small fictional example and the relevant error; keep customer records and credentials private.
 
-For ecommerce and agency teams using structured product data in support tools, this recipe connects two separate services:
+## Optional product-catalog integration
 
-1. Normalize an authorized product JSON-LD export using [Variant Ledger on RapidAPI](https://rapidapi.com/GrahamMiller/api/variant-ledger-product-variant-normalizer). Save the actual normalization response as `normalized.json`.
-2. Run the free, local [commerce knowledge-base input adapter](tools/commerce_kb_input.py):
-
-   ```bash
-   python3 tools/commerce_kb_input.py --self-test
-   python3 tools/commerce_kb_input.py normalized.json --corpus-id catalog-support > apify-input.json
-   ```
-
-3. Review the resulting inline input, then use [RAG Knowledge Base Sync & QA on Apify](https://apify.com/millgrah/rag-knowledge-base-sync-qa). Choose Inline JSON records and use the generated input.
-
-The adapter uses stable SKU keys, rejects normalization warnings and errors, and excludes prices and stock availability so volatile offers are not presented as permanent knowledge. It defaults to a partial snapshot and does not perform network calls, indexing, or destructive operations. Preserve the original normalization output separately for provenance. Review all generated content before using it in retrieval systems. Offline self-tests passed; a combined paid live workflow has not been tested. Marketplace pricing and platform usage charges apply to actual service calls.
-
-## Try the commerce adapter without spending
-
-Start with these fictional fixtures instead of your own catalog:
-
-- [Product-group request JSON](examples/commerce-product-group-input.json) — paste into the Variant Ledger RapidAPI playground using your own subscription and check the displayed charges.
-- [Synthetic normalization fixture](examples/commerce-normalized-offline-fixture.json) — use this to test the local adapter without an account, key, network call or payment. It is illustrative data, not a captured live API response.
-
-```bash
-python3 tools/commerce_kb_input.py examples/commerce-normalized-offline-fixture.json --corpus-id catalog-support > apify-input.json
-```
-
-The expected local output is two SKU-keyed text records, with `completeSnapshot: false` and no price or stock attributes. Inspect the result before submitting any data to Apify. Running the offline example costs nothing; a non-demo Apify report and any applicable marketplace usage are charged separately. [Try Variant Ledger](https://rapidapi.com/GrahamMiller/api/variant-ledger-product-variant-normalizer) · [Open the Apify Actor](https://apify.com/millgrah/rag-knowledge-base-sync-qa).
-
-## Agent-ready catalog QA guide
-
-[Catalog knowledge-base QA skill](skills/catalog-knowledge-base-qa/SKILL.md) provides a local review and conversion workflow for existing product and documentation exports. It is free to read and uses the two paid services only if the user separately requests and authorizes the applicable external calls. It does not crawl, create embeddings, or automatically modify a database. [Variant Ledger](https://rapidapi.com/GrahamMiller/api/variant-ledger-product-variant-normalizer) and [RAG Knowledge Base Sync & QA](https://apify.com/millgrah/rag-knowledge-base-sync-qa) remain separately billed marketplace services.
-
+Working with existing product exports instead of documentation? The separate [product-catalog guide](docs/product-catalog-knowledge-base.md) covers the local commerce adapter, fictional fixtures, Variant Ledger integration and catalog QA skill. The documentation workflow above does not require that second marketplace service.

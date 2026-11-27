@@ -68,3 +68,9 @@ jobs:
                       "- No paid API requests or Actor runs were made.\n"
                       "- This does not verify customer sales, quotas, payment processing, or payouts.\n")
           PY
+      - name: Discover relevant public developer questions
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          python3 tools/public_demand_review.py --self-test
+          python3 tools/public_demand_review.py

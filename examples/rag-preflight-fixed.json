@@ -1,0 +1,14 @@
+[
+  {
+    "url": "https://example.com/help/export",
+    "markdown": "# Export records\n\nOpen Settings, choose Export, and select JSON."
+  },
+  {
+    "url": "https://example.com/help/billing",
+    "markdown": "# Billing\n\nOpen Billing to see your current subscription and invoices."
+  },
+  {
+    "url": "https://example.com/help/workspaces",
+    "text": "Create a workspace from the dashboard."
+  }
+]

@@ -6,6 +6,8 @@ For AI agency developers who already use Apify datasets to maintain client suppo
 
 **[Try RAG Knowledge Base Sync & QA](https://apify.com/millgrah/rag-knowledge-base-sync-qa)** · **[Set up recurring dataset checks](docs/recurring-documentation-checks.md)**
 
+Start with a [free, reproducible local example](docs/check-crawler-data-before-embedding.md): inspect five fictional records with duplicates, missing text and conflicting source IDs, then compare the corrected input. For an existing Python job, use the [standalone dataset runner](docs/python-dataset-runner.md). Ask about your input shape using the [public integration question form](https://github.com/millgrah719/rag-knowledge-base-sync-recipes/issues/new?template=integration-question.yml), with fictional data only.
+
 | You already have | You receive | Your workflow controls |
 | --- | --- | --- |
 | Documentation text in an authorized Apify dataset | A QA report with row-level findings and a readiness decision | Whether the supplied dataset represents the whole source |

@@ -1,0 +1,62 @@
+name: Integration question
+description: Ask about checking an existing documentation dataset or connecting the report to your workflow.
+title: "Integration question: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This issue is public. Use fictional examples only. Do not include API tokens, private dataset/run IDs, client records, email addresses or payment details.
+
+        The Actor checks supplied records and prepares chunks and snapshot operations. Your existing tools collect the data, apply destination updates and acknowledge the accepted baseline.
+  - type: textarea
+    id: goal
+    attributes:
+      label: What are you trying to check or connect?
+      description: Describe the desired result and what currently happens.
+      placeholder: I already receive a fresh help-center dataset and want to check it before indexing.
+    validations:
+      required: true
+  - type: dropdown
+    id: input-type
+    attributes:
+      label: Where are your source records now?
+      options:
+        - Existing Apify dataset
+        - Local JSON export
+        - Inline records
+        - I do not yet have extracted text
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: report-size
+    attributes:
+      label: Approximate source rows per intended report
+      options:
+        - 1 to 100
+        - 101 to 500
+        - More than 500
+        - Not sure
+    validations:
+      required: true
+  - type: textarea
+    id: example
+    attributes:
+      label: Small fictional example or exact error
+      description: Optional. Replace confidential text and identifiers with invented values. Include the recipe or Actor version when relevant.
+      render: text
+    validations:
+      required: false
+  - type: dropdown
+    id: discovery
+    attributes:
+      label: Where did you find this project?
+      description: Optional; helps us understand which examples are useful.
+      options:
+        - Apify Store
+        - Apify community demonstration
+        - GitHub or web search
+        - Someone shared it with me
+        - Other
+    validations:
+      required: false

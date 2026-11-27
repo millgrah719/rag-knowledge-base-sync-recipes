@@ -1,0 +1,45 @@
+{
+  "jsonld": {
+    "@context": "https://schema.org",
+    "@type": "ProductGroup",
+    "@id": "#demo-trail-shirt",
+    "name": "Trail shirt",
+    "productGroupID": "TRAIL",
+    "brand": {
+      "@type": "Brand",
+      "name": "Demo Outfitters"
+    },
+    "variesBy": [
+      "https://schema.org/color",
+      "https://schema.org/size"
+    ],
+    "hasVariant": [
+      {
+        "@type": "Product",
+        "name": "Trail shirt, blue / M",
+        "sku": "TRAIL-BLU-M",
+        "color": "Blue",
+        "size": "M",
+        "offers": {
+          "@type": "Offer",
+          "price": "39.00",
+          "priceCurrency": "CAD",
+          "availability": "https://schema.org/InStock"
+        }
+      },
+      {
+        "@type": "Product",
+        "name": "Trail shirt, red / L",
+        "sku": "TRAIL-RED-L",
+        "color": "Red",
+        "size": "L",
+        "offers": {
+          "@type": "Offer",
+          "price": "42.00",
+          "priceCurrency": "CAD",
+          "availability": "https://schema.org/OutOfStock"
+        }
+      }
+    ]
+  }
+}

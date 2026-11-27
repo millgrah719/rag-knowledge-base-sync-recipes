@@ -133,3 +133,7 @@ python3 tools/commerce_kb_input.py examples/commerce-normalized-offline-fixture.
 ```
 
 The expected local output is two SKU-keyed text records, with `completeSnapshot: false` and no price or stock attributes. Inspect the result before submitting any data to Apify. Running the offline example costs nothing; a non-demo Apify report and any applicable marketplace usage are charged separately. [Try Variant Ledger](https://rapidapi.com/GrahamMiller/api/variant-ledger-product-variant-normalizer) · [Open the Apify Actor](https://apify.com/millgrah/rag-knowledge-base-sync-qa).
+
+## Agent-ready catalog QA guide
+
+[Catalog knowledge-base QA skill](skills/catalog-knowledge-base-qa/SKILL.md) provides a local review and conversion workflow for existing product and documentation exports. It is free to read and uses the two paid services only if the user separately requests and authorizes the applicable external calls. It does not crawl, create embeddings, or automatically modify a database. [Variant Ledger](https://rapidapi.com/GrahamMiller/api/variant-ledger-product-variant-normalizer) and [RAG Knowledge Base Sync & QA](https://apify.com/millgrah/rag-knowledge-base-sync-qa) remain separately billed marketplace services.

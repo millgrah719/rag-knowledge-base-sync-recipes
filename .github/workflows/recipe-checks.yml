@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Test workflow code
         run: node tests/workflow.test.mjs
-      - name: Confirm the public Actor is available
+      - name: Confirm public Actor and approved production build
         run: |
           python3 - <<'PY'
           import json, urllib.request, os, datetime
@@ -24,12 +24,34 @@ jobs:
               actor = json.load(response)['data']
           if not actor.get('isPublic'):
               raise SystemExit('Actor is not public')
+          # For an intentional release, update both values only after verifying
+          # the deployed build and its live outputs. Do not auto-approve new tags.
+          approved_build_id = '8MokcYD3PsETBwlqV'
+          approved_build_number = '0.1.1'
+          tagged_builds = actor.get('taggedBuilds') or {}
+          if not isinstance(tagged_builds, dict):
+              raise SystemExit('Actor build tags are unavailable; inspect production')
+
+          def is_approved(build):
+              return (isinstance(build, dict)
+                      and build.get('buildId') == approved_build_id
+                      and build.get('buildNumber') == approved_build_number)
+
+          if not is_approved(tagged_builds.get('latest')):
+              raise SystemExit('Production latest is not approved build '+approved_build_number+' ('+approved_build_id+'); inspect deployment before updating this check')
+          default_options = actor.get('defaultRunOptions') or {}
+          default_build = default_options.get('build') if isinstance(default_options, dict) else None
+          if not isinstance(default_build, str) or not (
+              default_build == approved_build_number or is_approved(tagged_builds.get(default_build))
+          ):
+              raise SystemExit('Customer default build does not resolve to approved build '+approved_build_number+'; inspect defaultRunOptions.build and build tags')
           stats = actor.get('stats', {})
           metrics = {k: stats.get(k) for k in ('totalRuns','totalUsers','totalUsers7Days','totalUsers30Days','bookmarkCount','actorReviewCount')}
-          report = ['## Public Actor check', '', 'Time: '+datetime.datetime.now(datetime.timezone.utc).isoformat(), '', 'Actor is public.', '', '| Public metric | Value |','|---|---:|']
+          report = ['## Public Actor check', '', 'Time: '+datetime.datetime.now(datetime.timezone.utc).isoformat(), '', 'Actor is public.', 'Production latest: '+approved_build_number+' ('+approved_build_id+').', 'Customer default build: '+default_build+' (resolves to approved build).', '', '| Public metric | Value |','|---|---:|']
           report += ['| '+k+' | '+str(v if v is not None else 'Unavailable')+' |' for k,v in metrics.items()]
           report += ['', 'These aggregate public counts include nonpaying users and owner tests. They are not sales, paying-customer counts or creator earnings. No Actor run was started and no Apify token was used.']
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
               summary.write('\n'.join(report)+'\n')
           print('\n'.join(report))
           PY
+

@@ -1,0 +1,187 @@
+{
+  "schema_version": "fictional-offline-example",
+  "products": [
+    {
+      "source": {
+        "document_id": "fictional-demo",
+        "pointer": "/hasVariant/0"
+      },
+      "parent_groups": [
+        {
+          "document_id": "fictional-demo",
+          "pointer": ""
+        }
+      ],
+      "sku": {
+        "value": "TRAIL-BLU-M",
+        "source": {
+          "document_id": "fictional-demo",
+          "pointer": "/hasVariant/0/sku"
+        },
+        "inherited": false
+      },
+      "name": {
+        "value": "Trail shirt, blue / M",
+        "source": {
+          "document_id": "fictional-demo",
+          "pointer": "/hasVariant/0/name"
+        },
+        "inherited": false
+      },
+      "brand": {
+        "value": "Demo Outfitters",
+        "source": {
+          "document_id": "fictional-demo",
+          "pointer": "/brand/name"
+        },
+        "inherited": true
+      },
+      "color": {
+        "value": "Blue",
+        "source": {
+          "document_id": "fictional-demo",
+          "pointer": "/hasVariant/0/color"
+        },
+        "inherited": false
+      },
+      "size": {
+        "value": "M",
+        "source": {
+          "document_id": "fictional-demo",
+          "pointer": "/hasVariant/0/size"
+        },
+        "inherited": false
+      },
+      "offers": [
+        {
+          "source": {
+            "document_id": "fictional-demo",
+            "pointer": "/hasVariant/0/offers"
+          },
+          "type": "Offer",
+          "inherited": false,
+          "scope": "product",
+          "price": {
+            "value": "39.00",
+            "source": {
+              "document_id": "fictional-demo",
+              "pointer": "/hasVariant/0/offers/price"
+            },
+            "inherited": false
+          },
+          "availability": {
+            "value": "in_stock",
+            "source": {
+              "document_id": "fictional-demo",
+              "pointer": "/hasVariant/0/offers/availability"
+            },
+            "inherited": false
+          },
+          "currency": {
+            "value": "CAD",
+            "source": {
+              "document_id": "fictional-demo",
+              "pointer": "/hasVariant/0/offers/priceCurrency"
+            },
+            "inherited": false
+          }
+        }
+      ]
+    },
+    {
+      "source": {
+        "document_id": "fictional-demo",
+        "pointer": "/hasVariant/1"
+      },
+      "parent_groups": [
+        {
+          "document_id": "fictional-demo",
+          "pointer": ""
+        }
+      ],
+      "sku": {
+        "value": "TRAIL-RED-L",
+        "source": {
+          "document_id": "fictional-demo",
+          "pointer": "/hasVariant/1/sku"
+        },
+        "inherited": false
+      },
+      "name": {
+        "value": "Trail shirt, red / L",
+        "source": {
+          "document_id": "fictional-demo",
+          "pointer": "/hasVariant/1/name"
+        },
+        "inherited": false
+      },
+      "brand": {
+        "value": "Demo Outfitters",
+        "source": {
+          "document_id": "fictional-demo",
+          "pointer": "/brand/name"
+        },
+        "inherited": true
+      },
+      "color": {
+        "value": "Red",
+        "source": {
+          "document_id": "fictional-demo",
+          "pointer": "/hasVariant/1/color"
+        },
+        "inherited": false
+      },
+      "size": {
+        "value": "L",
+        "source": {
+          "document_id": "fictional-demo",
+          "pointer": "/hasVariant/1/size"
+        },
+        "inherited": false
+      },
+      "offers": [
+        {
+          "source": {
+            "document_id": "fictional-demo",
+            "pointer": "/hasVariant/1/offers"
+          },
+          "type": "Offer",
+          "inherited": false,
+          "scope": "product",
+          "price": {
+            "value": "42.00",
+            "source": {
+              "document_id": "fictional-demo",
+              "pointer": "/hasVariant/1/offers/price"
+            },
+            "inherited": false
+          },
+          "availability": {
+            "value": "out_of_stock",
+            "source": {
+              "document_id": "fictional-demo",
+              "pointer": "/hasVariant/1/offers/availability"
+            },
+            "inherited": false
+          },
+          "currency": {
+            "value": "CAD",
+            "source": {
+              "document_id": "fictional-demo",
+              "pointer": "/hasVariant/1/offers/priceCurrency"
+            },
+            "inherited": false
+          }
+        }
+      ]
+    }
+  ],
+  "diagnostics": [],
+  "summary": {
+    "source_documents": 1,
+    "product_records": 2,
+    "offer_records": 2,
+    "error_count": 0,
+    "warning_count": 0
+  }
+}

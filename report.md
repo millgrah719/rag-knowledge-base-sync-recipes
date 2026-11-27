@@ -13,12 +13,8 @@ No stored records or review decisions are evicted. The bounded sample is not exh
 
 | Issue | Fit reasons | Review | Change | Last seen |
 |---|---|---|---|---|
-| https://github.com/Cirilplackal/python-coding-excercises/issues/62 | DUPLICATE_SOURCE_RECORDS | needs_review | new | 2026-11-27T22:44:57Z |
-| https://github.com/IcaroMouraDEV/brasao-ai/issues/17 | DUPLICATE_SOURCE_RECORDS | needs_review | new | 2026-11-27T22:44:57Z |
-| https://github.com/fisapool/goldbuddy/issues/2 | RECORDED_SOURCE_FAILURE | needs_review | new | 2026-11-27T22:44:57Z |
-| https://github.com/joaopn/cvclanker/issues/67 | DUPLICATE_SOURCE_RECORDS | needs_review | new | 2026-11-27T22:44:57Z |
 
-4 active candidates; at most 50 shown. Dismissed/resolved records remain in queue.json.
+0 active candidates; at most 50 shown. Dismissed/resolved records remain in queue.json.
 
 ## Separate commerce data problems
 

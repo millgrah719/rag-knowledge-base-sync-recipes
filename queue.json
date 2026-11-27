@@ -34,8 +34,8 @@
       "reason_codes": [
         "DUPLICATE_SOURCE_RECORDS"
       ],
-      "review_note": "",
-      "review_status": "needs_review",
+      "review_note": "Coding exercise requires a self-written standard-library-only mock RAG pipeline with no external services. Duplicate chunk handling is an internal assignment requirement, not an external QA request.",
+      "review_status": "dismissed",
       "source_updated_at": "2026-11-21T09:32:09Z",
       "topic": "rag"
     },
@@ -122,8 +122,8 @@
       "reason_codes": [
         "DUPLICATE_SOURCE_RECORDS"
       ],
-      "review_note": "",
-      "review_status": "needs_review",
+      "review_note": "Internal performance task to compact retrieval tool payloads, avoid repeated corpus records in context and configure Ollama. Requires changing the application's retrieval code and model settings, not auditing supplied source records.",
+      "review_status": "dismissed",
       "source_updated_at": "2026-11-27T18:10:36Z",
       "topic": "rag"
     },
@@ -280,8 +280,8 @@
       "reason_codes": [
         "RECORDED_SOURCE_FAILURE"
       ],
-      "review_note": "",
-      "review_status": "needs_review",
+      "review_note": "PRD for extending a WhatsApp member scraper. URL deduplication and failed group handling are internal scraping features; the Actor does not scrape or collect member information.",
+      "review_status": "dismissed",
       "source_updated_at": "2026-11-14T11:24:06Z",
       "topic": "rag"
     },
@@ -399,8 +399,8 @@
       "reason_codes": [
         "DUPLICATE_SOURCE_RECORDS"
       ],
-      "review_note": "",
-      "review_status": "needs_review",
+      "review_note": "Internal remeasurement of geographic rejection rates in job scraping; previous location bugs are described as fixed. The task concerns scraper location inputs and filtering, not supplied-record RAG QA.",
+      "review_status": "dismissed",
       "source_updated_at": "2026-11-21T02:57:19Z",
       "topic": "rag"
     },

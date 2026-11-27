@@ -14,7 +14,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Default: fictional demo. No product event; platform usage may apply.\n// For an authorized dataset, replace this object with:\n// {inputMode: \"dataset\", datasetId: \"YOUR_DATASET_ID\", corpusId: \"my-help-center\", completeSnapshot: false}\n// A dataset or inline run costs $0.50 per completed report plus platform usage.\n// For snapshot comparisons keep all settings stable and set previousManifestStoreId to your last eligible baseline.\nreturn [{json:{inputMode:\"demo\",chunkChars:250,overlapChars:50}}];"
+        "jsCode": "// Default: fictional demo. No product event; platform usage may apply.\n// For an authorized dataset, replace this object with:\n// {inputMode: \"dataset\", datasetId: \"YOUR_DATASET_ID\", corpusId: \"my-help-center\", completeSnapshot: false}\n// A dataset or inline run costs $0.50 per completed report plus platform usage.\n// Partial/incremental inputs remain review-only. Set completeSnapshot:true only\n// for an explicitly confirmed full authoritative source snapshot.\n// Compare only against a baseline whose operations the destination accepted.\nreturn [{json:{inputMode:\"demo\",completeSnapshot:false,chunkChars:250,overlapChars:50}}];"
       },
       "id": "8e10d3e1-2f4a-4af5-9b23-000000000002",
       "name": "Choose input",
@@ -22,6 +22,19 @@
       "typeVersion": 2,
       "position": [
         220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json;\nif (!input || typeof input !== \"object\" || Array.isArray(input)) throw new Error(\"Expected one Actor input object.\");\nconst mode = input.inputMode ?? \"demo\";\nif (![\"demo\", \"inline\", \"dataset\"].includes(mode)) throw new Error(\"Choose demo, inline or dataset inputMode.\");\nif (input.completeSnapshot !== undefined && typeof input.completeSnapshot !== \"boolean\") {\n  throw new Error(\"completeSnapshot must be an explicit boolean. Leave it false for partial or incremental data.\");\n}\nif (input.previousManifestStoreId !== undefined && (typeof input.previousManifestStoreId !== \"string\" || !input.previousManifestStoreId.trim())) {\n  throw new Error(\"previousManifestStoreId must identify a baseline already accepted by the destination, or be omitted.\");\n}\n// Never infer a full snapshot from a successful crawler run or dataset presence.\nreturn [{json:{...input,inputMode:mode,completeSnapshot:input.completeSnapshot === true}}];"
+      },
+      "id": "8e10d3e1-2f4a-4af5-9b23-000000000014",
+      "name": "Validate input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        440,
         0
       ]
     },
@@ -43,7 +56,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        440,
+        660,
         0
       ],
       "retryOnFail": false
@@ -57,7 +70,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        660,
+        880,
         0
       ]
     },
@@ -76,7 +89,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        880,
+        1100,
         0
       ],
       "retryOnFail": false
@@ -90,7 +103,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1100,
+        1320,
         0
       ]
     },
@@ -108,7 +121,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1320,
+        1540,
         0
       ]
     },
@@ -121,7 +134,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1540,
+        1760,
         0
       ]
     },
@@ -139,13 +152,31 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1760,
+        1980,
         0
       ]
     },
     {
       "parameters": {
-        "url": "={{ 'https://api.apify.com/v2/datasets/' + encodeURIComponent($('Require complete report').first().json.defaultDatasetId) + '/items?format=json' }}",
+        "url": "={{ 'https://api.apify.com/v2/key-value-stores/' + encodeURIComponent($('Require complete report').first().json.defaultKeyValueStoreId) + '/records/MANIFEST' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 20000
+        }
+      },
+      "id": "8e10d3e1-2f4a-4af5-9b23-000000000015",
+      "name": "Read manifest",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2200,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ 'https://api.apify.com/v2/datasets/' + encodeURIComponent($('Require complete report').first().json.defaultDatasetId) + '/items?format=json&limit=16001' }}",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "options": {
@@ -163,28 +194,28 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1980,
+        2420,
         0
       ]
     },
     {
       "parameters": {
-        "jsCode": "const run = $(\"Require complete report\").first().json;\nconst qa = $(\"Read QA\").first().json;\nconst ops = $input.first().json.body;\nif (!Array.isArray(ops)) throw new Error(\"Expected a complete JSON array of chunk operations.\");\nreturn [{json:{runId:run.id,storeId:run.defaultKeyValueStoreId,baselineEligible:run.completion.baselineEligible===true,qa,upserts:ops.filter(x=>x.operation===\"UPSERT\"),deleteSuggestions:ops.filter(x=>x.operation===\"DELETE\"),note:\"Review QA and deletion suggestions before indexing. This recipe does not write to a vector database.\"}}];"
+        "jsCode": "const run = $(\"Require complete report\").first().json;\nconst input = $(\"Validate input\").first().json;\nconst qa = $(\"Read QA\").first().json;\nconst manifest = $(\"Read manifest\").first().json;\nconst ops = $input.first().json.body;\nconst isObject = value => value !== null && typeof value === \"object\" && !Array.isArray(value);\nconst isCount = value => Number.isSafeInteger(value) && value >= 0;\nconst isText = value => typeof value === \"string\" && value.trim().length > 0;\nconst isDemo = input.inputMode === \"demo\";\nconst corpusId = isDemo ? \"demo\" : (input.corpusId ?? \"knowledge-base\");\nconst countFields = [\"inputRows\", \"acceptedDocuments\", \"duplicateRowsRemoved\", \"rejectedRows\", \"unchangedDocuments\", \"totalChunks\", \"upsertCount\", \"deleteCount\"];\nif (!isObject(qa) || countFields.some(key => !isCount(qa[key])) || !Array.isArray(qa.issues)\n    || typeof qa.completeSnapshot !== \"boolean\" || typeof qa.deletionEnabled !== \"boolean\"\n    || qa.issues.length !== qa.rejectedRows || qa.inputRows > 500 || qa.totalChunks > 8000\n    || qa.deleteCount > 8000 || qa.upsertCount > qa.totalChunks\n    || qa.acceptedDocuments + qa.duplicateRowsRemoved + qa.rejectedRows !== qa.inputRows\n    || qa.unchangedDocuments > qa.acceptedDocuments || qa.totalChunks < qa.acceptedDocuments) {\n  throw new Error(\"Malformed or inconsistent QA report; no downstream handoff or baseline update is allowed.\");\n}\nconst issueRows = new Set();\nfor (const issue of qa.issues) {\n  if (!isObject(issue) || !isCount(issue.row) || issue.row >= qa.inputRows || !isText(issue.reason) || issueRows.has(issue.row)) {\n    throw new Error(\"Malformed QA issue list; no downstream handoff is allowed.\");\n  }\n  issueRows.add(issue.row);\n}\nif (!isObject(manifest) || manifest.schemaVersion !== 1 || !isObject(manifest.config)\n    || manifest.config.corpus !== corpusId || !isObject(manifest.documents)\n    || typeof manifest.complete !== \"boolean\" || typeof run.completion.baselineEligible !== \"boolean\"\n    || manifest.complete !== qa.completeSnapshot || (!isDemo && manifest.complete !== run.completion.baselineEligible)) {\n  throw new Error(\"Manifest and completion status do not agree on the corpus or complete snapshot; keep the previous baseline.\");\n}\nif (!isDemo && input.completeSnapshot !== true && manifest.complete) {\n  throw new Error(\"A partial input was reported as a complete snapshot; keep the previous baseline.\");\n}\nfor (const record of [qa, run.completion]) {\n  if ((record.downstreamReady !== undefined && typeof record.downstreamReady !== \"boolean\")\n      || (record.approvalStatus !== undefined && ![\"READY\", \"BLOCKED\", \"REVIEW_REQUIRED\"].includes(record.approvalStatus))\n      || (record.approvalReasons !== undefined && (!Array.isArray(record.approvalReasons) || record.approvalReasons.some(reason => !isText(reason))))) {\n    throw new Error(\"Malformed Actor approval fields; no downstream handoff is allowed.\");\n  }\n}\nconst hasApproval = record => typeof record.downstreamReady === \"boolean\"\n  && [\"READY\", \"BLOCKED\", \"REVIEW_REQUIRED\"].includes(record.approvalStatus)\n  && Array.isArray(record.approvalReasons) && record.approvalScope === \"SUPPLIED_RECORDS_ONLY\";\nconst actorApprovalAvailable = hasApproval(qa) && hasApproval(run.completion);\nif (!Array.isArray(ops) || ops.length > 16000 || ops.length !== qa.upsertCount + qa.deleteCount\n    || (run.completion.operationCount !== undefined && run.completion.operationCount !== ops.length)) {\n  throw new Error(\"Expected a complete JSON array of chunk operations matching the report counts; no downstream handoff is allowed.\");\n}\nconst chunkIds = new Set();\nfor (const op of ops) {\n  if (!isObject(op) || ![\"UPSERT\", \"DELETE\"].includes(op.operation) || !isText(op.chunkId)\n      || !isText(op.source) || op.corpusId !== corpusId || chunkIds.has(op.chunkId)\n      || (op.operation === \"UPSERT\" && !isText(op.text))) {\n    throw new Error(\"Malformed, duplicate or foreign-corpus chunk operation; no downstream handoff is allowed.\");\n  }\n  chunkIds.add(op.chunkId);\n}\nconst upserts = ops.filter(op => op.operation === \"UPSERT\");\nconst deleteSuggestions = ops.filter(op => op.operation === \"DELETE\");\nif (upserts.length !== qa.upsertCount || deleteSuggestions.length !== qa.deleteCount\n    || (deleteSuggestions.length > 0 && (!qa.deletionEnabled || !manifest.complete || !input.previousManifestStoreId))) {\n  throw new Error(\"Chunk operations do not match QA counts or deletion eligibility; keep the previous baseline.\");\n}\n// COMPLETE means report production finished. Acceptance and destination delivery\n// are separate states. Optional stricter Actor flags can only close this gate.\nconst qaAccepted = qa.rejectedRows === 0 && qa.issues.length === 0 && qa.acceptedDocuments > 0;\nconst blockedReasons = [];\nif (!qaAccepted) blockedReasons.push(\"QA rejected source rows or accepted no documents; repair and review the input before indexing.\");\nif (isDemo) blockedReasons.push(\"Fictional demo output is for preview only.\");\nif (input.completeSnapshot !== true || !manifest.complete) blockedReasons.push(\"Partial or incremental data is review-only; automatic handoff requires a complete authoritative snapshot.\");\nif (!actorApprovalAvailable) blockedReasons.push(\"ACTOR_APPROVAL_UNAVAILABLE: This Actor output lacks the explicit approval contract; review only.\");\nif (actorApprovalAvailable && [qa, run.completion].some(record => record.downstreamReady !== true || record.approvalStatus !== \"READY\" || record.approvalReasons.length > 0)) {\n  blockedReasons.push(\"The Actor explicitly withheld downstream approval.\");\n}\nconst downstreamReady = blockedReasons.length === 0;\nreturn [{json:{\n  runId:run.id,\n  storeId:run.defaultKeyValueStoreId,\n  reportComplete:true,\n  qaAccepted,\n  actorApprovalAvailable,\n  downstreamReady,\n  blockedReasons,\n  qa,\n  // Only these top-level arrays are a candidate handoff. DELETEs remain suggestions.\n  upserts:downstreamReady ? upserts : [],\n  deleteSuggestions:downstreamReady ? deleteSuggestions : [],\n  review:{upserts,deleteSuggestions,note:\"Inspection only. Do not wire this review object to a destination.\"},\n  baseline:{\n    previousManifestStoreId:input.previousManifestStoreId ?? null,\n    candidateManifestStoreId:downstreamReady ? run.defaultKeyValueStoreId : null,\n    eligible:downstreamReady,\n    commitAllowed:false,\n    updated:false,\n    requiresDestinationAcknowledgement:true,\n    note:\"Keep the previous baseline until the destination confirms all UPSERTs and reviewed DELETEs were applied. This workflow never persists a new baseline.\"\n  },\n  note:\"This recipe produces a reviewed handoff candidate only. It does not generate embeddings, write to a vector database, apply DELETE suggestions or acknowledge destination acceptance.\"\n}}];"
       },
       "id": "8e10d3e1-2f4a-4af5-9b23-000000000009",
       "name": "Review result",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2200,
+        2640,
         0
       ]
     },
     {
       "parameters": {
         "width": 620,
-        "height": 320,
-        "content": "## Prepare documents for RAG\n1. Create an Apify account and API token. Create an n8n Header Auth credential with name `Authorization` and value `Bearer YOUR_TOKEN`. Select the same credential in all five HTTP request nodes: Start Apify report, Wait for same run, Read completion status, Read QA, Read chunk operations.\n2. Run the default fictional demo. Platform usage may apply.\n3. To process your dataset, edit Choose input. Non-demo completed reports cost US$0.50 plus usage. The run has a US$0.75 maximum charge setting.\n[Actor and documentation](https://apify.com/millgrah/rag-knowledge-base-sync-qa)"
+        "height": 360,
+        "content": "## Prepare documents for RAG\n1. Create an Apify account and API token. Create an n8n Header Auth credential with name `Authorization` and value `Bearer YOUR_TOKEN`. Select the same credential in all six HTTP request nodes: Start Apify report, Wait for same run, Read completion status, Read QA, Read manifest, Read chunk operations.\n2. Run the default fictional demo. Inspect `review`; top-level handoff arrays remain empty. Platform usage may apply.\n3. Edit Choose input for your authorized dataset. Non-demo completed reports cost US$0.50 plus usage; the run has a US$0.75 maximum charge setting.\n[Actor and documentation](https://apify.com/millgrah/rag-knowledge-base-sync-qa)"
       },
       "id": "8e10d3e1-2f4a-4af5-9b23-000000000010",
       "name": "Setup and costs",
@@ -198,8 +229,8 @@
     {
       "parameters": {
         "width": 650,
-        "height": 320,
-        "content": "## Read-only report workflow\nStarts one Actor run. The POST waits up to 60 seconds; an authenticated GET waits up to 60 additional seconds for that same run. No POST retry or unbounded polling. Queueing can exceed this window: inspect the exact run ID if the workflow stops.\nRequires SUCCEEDED and a COMPLETE report before reading QA and chunks. Keep the last eligible full manifest. Review DELETE suggestions; this recipe does not apply them or update a vector database.\nFull n8n runtime execution has not yet been verified; code-node fixture tests are separate."
+        "height": 430,
+        "content": "## Completion, QA and destination acceptance\nStarts one Actor run; a bounded GET waits for that same run. No POST retry or polling loop. If the wait expires, inspect the exact run ID before starting another paid report.\n`COMPLETE` confirms report production, not clean QA. Rejected rows block the top-level handoff. Fictional demos and partial/incremental inputs are review-only. Only explicit complete snapshots with clean QA, an eligible manifest and the Actor approval contract can set `downstreamReady:true`. Older Actor outputs without that contract stay review-only.\n`review` is for inspection. Consume the top-level arrays only after checking `downstreamReady`; review DELETE suggestions separately. There are no destination writes in this recipe.\nThe baseline candidate is not committed. Keep the previous baseline until the destination confirms all operations were accepted; `baseline.updated` and `baseline.commitAllowed` stay false here.\nFull n8n runtime execution has not yet been verified; code-node fixture tests are separate."
       },
       "id": "8e10d3e1-2f4a-4af5-9b23-000000000011",
       "name": "Safety gates",
@@ -227,6 +258,17 @@
       "main": [
         [
           {
+            "node": "Validate input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate input": {
+      "main": [
+        [
+          {
             "node": "Start Apify report",
             "type": "main",
             "index": 0
@@ -239,6 +281,28 @@
         [
           {
             "node": "Capture run ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Capture run ID": {
+      "main": [
+        [
+          {
+            "node": "Wait for same run",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait for same run": {
+      "main": [
+        [
+          {
+            "node": "Require successful run",
             "type": "main",
             "index": 0
           }
@@ -282,6 +346,17 @@
       "main": [
         [
           {
+            "node": "Read manifest",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read manifest": {
+      "main": [
+        [
+          {
             "node": "Read chunk operations",
             "type": "main",
             "index": 0
@@ -294,28 +369,6 @@
         [
           {
             "node": "Review result",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Capture run ID": {
-      "main": [
-        [
-          {
-            "node": "Wait for same run",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Wait for same run": {
-      "main": [
-        [
-          {
-            "node": "Require successful run",
             "type": "main",
             "index": 0
           }

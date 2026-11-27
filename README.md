@@ -43,17 +43,17 @@ For custom fields, use `--source-field source_id --text-field content`. This dia
 
 When crawler output contains repeated source rows, missing text or conflicting versions of the same source, sending everything straight into an embedding pipeline can create avoidable rework. This Actor prepares supplied text deterministically, preserves provenance and exposes a QA report and optional snapshot change operations. It does not scrape websites, generate embeddings or modify a vector database.
 
-Supply existing crawler data or JSON records, wait for a successful run and a `COMPLETE` report, then review the QA, UPSERT chunks and any DELETE suggestions before using them in your own indexing workflow.
+Supply existing crawler data or JSON records, wait for a successful run and a `COMPLETE` report, then review the QA, UPSERT chunks and any DELETE suggestions. `COMPLETE` means report production finished; it does not mean the supplied data is approved for indexing.
 
 ## n8n workflow (importable JSON)
 
 [Download the workflow JSON](https://raw.githubusercontent.com/millgrah719/rag-knowledge-base-sync-recipes/main/n8n/rag-dataset-qa.json) · [View source](n8n/rag-dataset-qa.json). Import the JSON into your n8n instance. This is an independently authored integration recipe, not an official n8n or Apify template.
 
 1. Create an Apify account and an API token. In n8n create a **Header Auth** credential with header name `Authorization` and value `Bearer YOUR_APIFY_TOKEN`. Never paste your token into the workflow JSON.
-2. Select the credential in all five HTTP Request nodes: Start Apify report, Wait for same run, Read completion status, Read QA and Read chunk operations.
-3. Execute the manual trigger with the default fictional demo. The expected output is two UPSERT chunks, no deletion suggestions, and a QA report with one duplicate row removed and zero rejected rows.
+2. Select the credential in all six HTTP Request nodes: Start Apify report, Wait for same run, Read completion status, Read QA, Read manifest and Read chunk operations.
+3. Execute the manual trigger with the default fictional demo. Inspect two sample chunks under `review.upserts`, no deletion suggestions, and a QA report with one duplicate row removed and zero rejected rows. The top-level operation arrays stay empty because demo data is preview-only.
 4. To use your own Apify dataset, replace the JSON returned in **Choose input** with the object below. The dataset must be accessible to your Apify account and contain a stable source key and text. Non-demo billing applies.
-5. Review QA and deletion suggestions before connecting the result to your embedding/indexing tools. The workflow is inactive by default.
+5. Review QA and deletion suggestions before connecting the result to your embedding/indexing tools. A destination integration must check `downstreamReady === true` and consume only the top-level operation arrays. The workflow is inactive by default and does not write to an index or save a new baseline.
 
 ```javascript
 return [{json: {
@@ -68,7 +68,11 @@ return [{json: {
 }}];
 ```
 
-The initial request waits up to 60 seconds. The workflow then reads that same run with an additional wait of up to 60 seconds, without starting another report. It proceeds only when the run succeeds and the report is COMPLETE. Queueing can exceed this bounded wait. If the workflow stops, inspect the exact run ID before deciding whether another paid report is needed. Do not turn on automatic POST retries.
+The initial request waits up to 60 seconds. The workflow then reads that same run with an additional wait of up to 60 seconds, without starting another report. It reads outputs only when the run succeeds and the report is COMPLETE, then validates QA, the manifest and operation counts. Queueing can exceed this bounded wait. If the workflow stops, inspect the exact run ID before deciding whether another paid report is needed. Do not turn on automatic POST retries.
+
+**Automatic handoff requires a clean, explicitly complete snapshot and matching approval fields in both QA and SYNC_STATUS.** Rejected rows block the handoff. Partial input and fictional demos remain review-only. Older Actor outputs, including build 0.0.3, do not have the new approval contract and therefore remain review-only with `ACTOR_APPROVAL_UNAVAILABLE`. Updating this recipe does not deploy a new Actor build.
+
+Read the [handoff and validation contract](docs/n8n-validation.md) before attaching a destination. The contract approves preparation of supplied records only; it cannot establish whether an upstream crawl captured the whole source.
 
 ## Connect directly after Website Content Crawler
 
@@ -83,13 +87,15 @@ In the upstream Actor's Integrations tab, add RAG Knowledge Base Sync & QA as a 
 }
 ```
 
-This is the native Apify integration input, not an n8n expression. A partial or failed crawl must not be treated as a complete authoritative snapshot.
+This is the native Apify integration input, not an n8n expression. This partial-data example produces a report for review. A partial or failed crawl must not be treated as a complete authoritative snapshot.
 
 ## Compare snapshots safely
 
-For a complete authoritative first snapshot, set `completeSnapshot: true`. After the run succeeds, confirm `SYNC_STATUS.status` is `COMPLETE`, `baselineEligible` is true and `MANIFEST.complete` is true. Preserve that run's default key-value store ID. Supply it as `previousManifestStoreId` on the next run; keep the corpus ID, field mappings, and chunk settings the same.
+For a complete authoritative first snapshot, set `completeSnapshot: true` only after verifying source completeness. After the run succeeds, confirm `SYNC_STATUS.status` is `COMPLETE`, inspect QA, and require `downstreamReady: true` in both QA and SYNC_STATUS for an automatic handoff. The manifest must be complete and baseline-eligible. Older reports without the approval contract require manual review.
 
-Review `DELETE` suggestions before applying them. A report with rejected input rows or partial input cannot replace the previous eligible baseline. An unchanged snapshot can return zero chunk operations.
+Review `DELETE` suggestions before applying them. Preserve the candidate run's default key-value store ID as the next `previousManifestStoreId` **only after the destination confirms all UPSERTs and reviewed DELETEs were accepted**. Until then, keep the previous baseline. Keep the corpus ID, field mappings and chunk settings the same between comparisons. The n8n workflow exposes a candidate store ID but leaves `baseline.commitAllowed` and `baseline.updated` false because it has no destination acknowledgement or persistence step.
+
+A report with rejected input rows or partial input cannot replace the previous accepted full baseline. Do not apply partial-batch operations between full snapshots while retaining an older baseline: changed chunk IDs from the partial update can become untracked and survive later cleanup. This recipe keeps partial batches review-only. An unchanged full snapshot can return zero chunk operations.
 
 ## Costs and limits
 
@@ -101,7 +107,7 @@ Review `DELETE` suggestions before applying them. A report with rejected input r
 
 ## Validation and feedback
 
-The underlying Actor's live demo, paid-report, and dataset-comparison paths have been tested. The n8n recipe is new; its full execution in an n8n instance has not yet been verified. Start with the fictional demo and report reproducible issues using the [Actor's Issues tab](https://apify.com/millgrah/rag-knowledge-base-sync-qa/issues). Do not include customer data or credentials.
+Earlier Actor releases have had live demo, paid-report and dataset-comparison checks. This workflow's exported JavaScript is tested along its connection graph with mocked HTTP responses, including rejected records, partial input, older Actor output, manifest disagreement and demo isolation. Full import and execution in a live n8n instance have not been verified. These checks do not establish customer sales, destination delivery or deployment of a new Actor release. Start with the fictional demo and report reproducible issues using the [Actor's Issues tab](https://apify.com/millgrah/rag-knowledge-base-sync-qa/issues). Do not include customer data or credentials.
 
 Questions about reducing re-embedding work or maintaining multiple client knowledge bases are welcome. Try the demo first, then use a real dataset when ready.
 
@@ -137,3 +143,4 @@ The expected local output is two SKU-keyed text records, with `completeSnapshot:
 ## Agent-ready catalog QA guide
 
 [Catalog knowledge-base QA skill](skills/catalog-knowledge-base-qa/SKILL.md) provides a local review and conversion workflow for existing product and documentation exports. It is free to read and uses the two paid services only if the user separately requests and authorizes the applicable external calls. It does not crawl, create embeddings, or automatically modify a database. [Variant Ledger](https://rapidapi.com/GrahamMiller/api/variant-ledger-product-variant-normalizer) and [RAG Knowledge Base Sync & QA](https://apify.com/millgrah/rag-knowledge-base-sync-qa) remain separately billed marketplace services.
+

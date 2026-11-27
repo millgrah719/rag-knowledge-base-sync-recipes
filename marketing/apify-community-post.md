@@ -1,6 +1,6 @@
-# Apify community demonstration draft
+# Archived Apify community draft
 
-Status: prepared for owner review; not posted to Discord. Use one designated showcase channel after checking its current rules. This file is the proposed message, not evidence of a community publication or customer result.
+Status: archived and not for publication. This draft was never posted. The active customer route uses the [free demonstration](../docs/check-crawler-data-before-embedding.md), the Apify Store listing and the existing integration-question form. No community account or signup is required. The original proposed message is retained below as history.
 
 ---
 

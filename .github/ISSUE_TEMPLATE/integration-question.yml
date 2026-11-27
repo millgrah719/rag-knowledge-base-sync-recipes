@@ -54,7 +54,6 @@ body:
       description: Optional; helps us understand which examples are useful.
       options:
         - Apify Store
-        - Apify community demonstration
         - GitHub or web search
         - Someone shared it with me
         - Other

@@ -1,0 +1,70 @@
+name: Integration and service checks
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/integration-checks.yml'
+      - 'tools/**'
+      - 'n8n/**'
+  schedule:
+    - cron: '23 14 * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: integration-checks
+  cancel-in-progress: true
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - name: Checkout public recipe source at this revision
+        shell: bash
+        run: |
+          git init
+          git fetch --depth=1 https://github.com/millgrah719/rag-knowledge-base-sync-recipes.git "$GITHUB_SHA"
+          git checkout --detach FETCH_HEAD
+      - name: Verify offline catalog conversion
+        run: python3 tools/commerce_kb_input.py --self-test
+      - name: Validate example data preflight
+        run: python3 tools/rag_preflight.py --demo
+      - name: Check the documented public service interfaces without paid calls
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import urllib.request
+
+          def get(url):
+              request = urllib.request.Request(url, headers={"User-Agent": "RAG-recipe-integration-check/1.0"})
+              with urllib.request.urlopen(request, timeout=20) as response:
+                  if response.status != 200:
+                      raise RuntimeError("Unexpected HTTP status")
+                  data = response.read(2_000_001)
+                  if len(data) > 2_000_000:
+                      raise RuntimeError("Response too large")
+                  return json.loads(data)
+
+          root = "https://variant-ledger-api.millgrah719.chatgpt.site"
+          health = get(root + "/health")
+          assert health.get("status") == "ok" and health.get("service") == "Variant Ledger", "Unexpected service health"
+          schema = get(root + "/openapi.json")
+          assert "/v1/products/normalize" in schema["paths"], "Documented normalization route missing"
+          assert any(s.get("url") == "https://variant-ledger-product-variant-normalizer.p.rapidapi.com" for s in schema["servers"]), "Gateway changed"
+          actor = get("https://api.apify.com/v2/acts/millgrah~rag-knowledge-base-sync-qa")["data"]
+          assert actor.get("isPublic") is True, "Actor not publicly listed"
+          plans = [p for p in actor.get("pricingInfos", []) if p.get("pricingModel") == "PAY_PER_EVENT"]
+          assert plans, "Expected pay-per-event pricing not found"
+          plan = sorted(plans, key=lambda p: p.get("startedAt", ""))[-1]
+          event = plan["pricingPerEvent"]["actorChargeEvents"]["sync-report"]
+          assert event.get("eventPriceUsd") == 0.5, "Displayed report pricing changed; review documentation"
+          assert event.get("isOneTimeEvent") is True, "Unexpected event charging model"
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as f:
+              f.write("## Public integration checks\n\n"
+                      "- Variant Ledger public health and consumer OpenAPI: passed.\n"
+                      "- Apify public listing and advertised report pricing: passed.\n"
+                      "- No paid API requests or Actor runs were made.\n"
+                      "- This does not verify customer sales, quotas, payment processing, or payouts.\n")
+          PY

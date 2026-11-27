@@ -40,8 +40,8 @@
         "DUPLICATE_SOURCE_RECORDS",
         "RECORDED_SOURCE_FAILURE"
       ],
-      "review_note": "",
-      "review_status": "needs_review",
+      "review_note": "Training assignment to implement Dockerized MCP servers, authentication and PDF-to-Qdrant ingestion. Duplicate-point prevention is an exercise requirement. It requests implementation rather than an external record-audit or sync report.",
+      "review_status": "dismissed",
       "source_updated_at": "2026-11-25T18:46:15Z",
       "topic": "rag"
     },
@@ -57,8 +57,8 @@
         "RECORDED_SOURCE_FAILURE",
         "SOURCE_PROVENANCE_NEEDED"
       ],
-      "review_note": "",
-      "review_status": "needs_review",
+      "review_note": "Internal tracker for existing Weaviate ingestion, embeddings, classification, titles and index checks. Comments discuss project-specific vector tracking. The requested pipeline and enrichment stages are outside this Actor's report-only scope.",
+      "review_status": "dismissed",
       "source_updated_at": "2026-11-25T12:18:13Z",
       "topic": "rag"
     },
@@ -71,8 +71,8 @@
       "reason_codes": [
         "FULL_SNAPSHOT_REEMBEDDING"
       ],
-      "review_note": "",
-      "review_status": "needs_review",
+      "review_note": "Backend configuration change to the default hybrid-search vector weight, pending retrieval evaluation. It explicitly excludes RAG pipeline changes, production index changes and re-embedding. No input-quality or sync-report need is stated.",
+      "review_status": "dismissed",
       "source_updated_at": "2026-11-26T21:48:15Z",
       "topic": "rag"
     },
@@ -85,8 +85,8 @@
       "reason_codes": [
         "MISSING_CRAWLER_TEXT"
       ],
-      "review_note": "",
-      "review_status": "needs_review",
+      "review_note": "Implementation specification for a private podcast-transcription Actor covering feed/audio ingestion, speech recognition, add-ons and billing. Audio processing and own-code development are outside this RAG report's supplied-text scope.",
+      "review_status": "dismissed",
       "source_updated_at": "2026-11-26T17:54:11Z",
       "topic": "rag"
     },
@@ -100,8 +100,8 @@
         "DUPLICATE_SOURCE_RECORDS",
         "SOURCE_PROVENANCE_NEEDED"
       ],
-      "review_note": "",
-      "review_status": "needs_review",
+      "review_note": "Deferred benchmark for symbolic guitar-phrase retrieval, musical constraints and ranking relevance. Duplicate chunks concern benchmark diversity and source leakage. This is outside supplied-text QA and snapshot comparison.",
+      "review_status": "dismissed",
       "source_updated_at": "2026-11-26T05:57:04Z",
       "topic": "rag"
     },
@@ -115,8 +115,8 @@
       "reason_codes": [
         "MISSING_CRAWLER_TEXT"
       ],
-      "review_note": "",
-      "review_status": "needs_review",
+      "review_note": "Documentation-maintenance plan to remove or replace integration screenshots and correct stale UI text. It does not request dataset QA, stable chunks or full-snapshot comparison.",
+      "review_status": "dismissed",
       "source_updated_at": "2026-11-26T12:29:22Z",
       "topic": "rag"
     },
@@ -129,8 +129,8 @@
       "reason_codes": [
         "RECORDED_SOURCE_FAILURE"
       ],
-      "review_note": "",
-      "review_status": "needs_review",
+      "review_note": "Internal Zapier connector feature for Server Actor HTTP requests, OpenAPI forms, timeouts and retry handling. A comment reports implementation in a PR stack. It is not a supplied-record QA or snapshot-comparison request.",
+      "review_status": "dismissed",
       "source_updated_at": "2026-11-25T13:26:28Z",
       "topic": "rag"
     },
@@ -145,8 +145,8 @@
         "FULL_SNAPSHOT_REEMBEDDING",
         "RECORDED_SOURCE_FAILURE"
       ],
-      "review_note": "",
-      "review_status": "needs_review",
+      "review_note": "Internal roadmap for retrieval ranking, EPUB/PDF processing, snippets, language support and evaluation with coordinated index changes. The work targets local search implementation rather than an external supplied-dataset QA report.",
+      "review_status": "dismissed",
       "source_updated_at": "2026-11-23T12:22:41Z",
       "topic": "rag"
     },
@@ -159,8 +159,8 @@
       "reason_codes": [
         "DUPLICATE_SOURCE_RECORDS"
       ],
-      "review_note": "",
-      "review_status": "needs_review",
+      "review_note": "Internal documentation-drift command using AST checks, lychee and existing Qdrant similarity. Its duplication check concerns semantically similar rules rather than exact source-record duplication. Existing tools are selected; no external RAG QA service is requested.",
+      "review_status": "dismissed",
       "source_updated_at": "2026-11-26T09:49:22Z",
       "topic": "rag"
     },
@@ -173,8 +173,8 @@
       "reason_codes": [
         "FULL_SNAPSHOT_REEMBEDDING"
       ],
-      "review_note": "",
-      "review_status": "needs_review",
+      "review_note": "Embedding-server performance work moved to another repository; this issue now covers AI-spend dashboard accounting. It keeps existing vectors and explicitly needs no re-index. Neither task fits supplied-record QA or snapshot comparison.",
+      "review_status": "dismissed",
       "source_updated_at": "2026-11-27T00:18:54Z",
       "topic": "rag"
     },
@@ -187,8 +187,8 @@
       "reason_codes": [
         "RECORDED_SOURCE_FAILURE"
       ],
-      "review_note": "",
-      "review_status": "needs_review",
+      "review_note": "Framework feature request for shared datasets, key-value stores and request queues, including leases and concurrency. It needs cross-run storage infrastructure rather than supplied-record QA, chunk preparation or full-snapshot comparison.",
+      "review_status": "dismissed",
       "source_updated_at": "2026-11-26T19:35:19Z",
       "topic": "rag"
     },
@@ -202,8 +202,8 @@
         "DUPLICATE_SOURCE_RECORDS",
         "RECORDED_SOURCE_FAILURE"
       ],
-      "review_note": "",
-      "review_status": "needs_review",
+      "review_note": "Internal distributed-crawler specification for gateway routing, partition handoff, shared rate limits and fenced exports. Duplicate records concern migration and transport guarantees that a post-processing report cannot enforce.",
+      "review_status": "dismissed",
       "source_updated_at": "2026-11-07T16:45:41Z",
       "topic": "rag"
     },
@@ -217,8 +217,8 @@
         "DUPLICATE_SOURCE_RECORDS",
         "MISSING_CRAWLER_TEXT"
       ],
-      "review_note": "",
-      "review_status": "needs_review",
+      "review_note": "Internal defect/status tracker for a watcher, indexer, query filters and code graph. Comments record merged fixes and retained backlog. Remaining repairs require application changes that a supplied-record QA report cannot implement.",
+      "review_status": "dismissed",
       "source_updated_at": "2026-11-26T17:57:44Z",
       "topic": "rag"
     },
@@ -232,8 +232,8 @@
         "DUPLICATE_SOURCE_RECORDS",
         "MISSING_CRAWLER_TEXT"
       ],
-      "review_note": "",
-      "review_status": "needs_review",
+      "review_note": "Requests an internal document-reconstruction fix: exact document matching, ordered chunks and overlap-free joins. A candidate patch is referenced. This Actor emits chunks but does not reconstruct documents from the application's store.",
+      "review_status": "dismissed",
       "source_updated_at": "2026-11-26T14:54:37Z",
       "topic": "rag"
     },
@@ -247,8 +247,8 @@
         "DUPLICATE_SOURCE_RECORDS",
         "RECORDED_SOURCE_FAILURE"
       ],
-      "review_note": "",
-      "review_status": "needs_review",
+      "review_note": "Requests bulk crawling, HTML/PDF extraction, relevance filtering, cross-page near-duplicate passage removal and answer evaluation. The Actor does not perform those core tasks; no supplied-record QA or full-snapshot comparison request is stated.",
+      "review_status": "dismissed",
       "source_updated_at": "2026-11-23T13:41:05Z",
       "topic": "rag"
     },
@@ -264,8 +264,8 @@
         "MISSING_CRAWLER_TEXT",
         "RECORDED_SOURCE_FAILURE"
       ],
-      "review_note": "",
-      "review_status": "needs_review",
+      "review_note": "Requests changes to its manifest-driven seeder: authority-separated collections, rich domain metadata, embedding compatibility and vector-store reconciliation. Stable hashes overlap conceptually, but this Actor cannot perform the required ingestion or writes.",
+      "review_status": "dismissed",
       "source_updated_at": "2026-11-23T16:46:02Z",
       "topic": "rag"
     },
@@ -278,8 +278,8 @@
       "reason_codes": [
         "FULL_SNAPSHOT_REEMBEDDING"
       ],
-      "review_note": "",
-      "review_status": "needs_review",
+      "review_note": "Design for a tenant-aware versioned Drive with blob/Postgres storage, access controls, extraction, embeddings and search. It specifies its own storage/indexing implementation; the supplied-record report cannot provide that system.",
+      "review_status": "dismissed",
       "source_updated_at": "2026-11-26T08:43:53Z",
       "topic": "rag"
     },
@@ -293,8 +293,8 @@
         "DUPLICATE_SOURCE_RECORDS",
         "MISSING_CRAWLER_TEXT"
       ],
-      "review_note": "",
-      "review_status": "needs_review",
+      "review_note": "Requests answer-time token budgeting, citation formatting, untrusted-text fencing, no-results handling and retrieved-context deduplication. These controls are outside the Actor's supplied-record character-chunk and QA report scope.",
+      "review_status": "dismissed",
       "source_updated_at": "2026-11-26T13:28:56Z",
       "topic": "rag"
     },
@@ -307,8 +307,8 @@
       "reason_codes": [
         "RECORDED_SOURCE_FAILURE"
       ],
-      "review_note": "",
-      "review_status": "needs_review",
+      "review_note": "Maintainer-directed database event synchronization changes: durable queues, retries, transaction-commit ordering and rollback safety. It requires changes inside the write/indexing path; the Actor does not provide those guarantees.",
+      "review_status": "dismissed",
       "source_updated_at": "2026-11-27T01:22:00Z",
       "topic": "rag"
     },
@@ -323,8 +323,8 @@
         "FULL_SNAPSHOT_REEMBEDDING",
         "RECORDED_SOURCE_FAILURE"
       ],
-      "review_note": "",
-      "review_status": "needs_review",
+      "review_note": "Internal research and implementation epic for retrieval evaluation, index provenance, security telemetry and ranking experiments. Acceptance requires repository changes and measured query results, which the record-preparation Actor does not supply.",
+      "review_status": "dismissed",
       "source_updated_at": "2026-11-26T18:41:44Z",
       "topic": "rag"
     }

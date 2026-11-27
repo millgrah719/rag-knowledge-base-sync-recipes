@@ -1,0 +1,333 @@
+{
+  "last_run": {
+    "at": "2026-11-27T03:17:48Z",
+    "changed_urls": [],
+    "deferred_candidates": 9,
+    "failed_queries": [],
+    "incomplete_queries": [],
+    "ledger_at_capacity": false,
+    "new_urls": [
+      "https://github.com/DCGM/semant-demo/issues/560",
+      "https://github.com/jateeter/localAIStack/issues/160",
+      "https://github.com/pavlosuperhero/oracle-rag/issues/39",
+      "https://github.com/caelum29/calibre-mcp/issues/645",
+      "https://github.com/gptme/gptme-contrib/issues/2356",
+      "https://github.com/gptme/gptme-contrib/issues/2562",
+      "https://github.com/llm4s/llm4s/issues/3024",
+      "https://github.com/PhysShell/griff/issues/107",
+      "https://github.com/CodelineAtyab/CodelineLegendsAIWorkflows/issues/314",
+      "https://github.com/hanz-geric/sbl-chatbot/issues/29",
+      "https://github.com/goodfetch/goodfetch/issues/587",
+      "https://github.com/objectstack-ai/objectstack/issues/37735",
+      "https://github.com/dan-petty/devops-cli/issues/4975",
+      "https://github.com/DCGM/semant-demo/issues/892",
+      "https://github.com/goodfetch/goodfetch/issues/4033",
+      "https://github.com/DvirBaumel8/domain-trading/issues/78",
+      "https://github.com/apify/apify-docs/issues/3198",
+      "https://github.com/dan-petty/devops-cli/issues/4920",
+      "https://github.com/kent8192/aidash/issues/1020",
+      "https://github.com/apify/apify-zapier-integration/issues/186"
+    ]
+  },
+  "records": {
+    "https://github.com/CodelineAtyab/CodelineLegendsAIWorkflows/issues/314": {
+      "first_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T03:17:48Z",
+      "query_ids": [
+        "rag_chunks"
+      ],
+      "reason_codes": [
+        "DUPLICATE_SOURCE_RECORDS",
+        "RECORDED_SOURCE_FAILURE"
+      ],
+      "review_note": "",
+      "review_status": "needs_review",
+      "source_updated_at": "2026-11-25T18:46:15Z",
+      "topic": "rag"
+    },
+    "https://github.com/DCGM/semant-demo/issues/560": {
+      "first_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T03:17:48Z",
+      "query_ids": [
+        "rag_chunks"
+      ],
+      "reason_codes": [
+        "DUPLICATE_SOURCE_RECORDS",
+        "MISSING_CRAWLER_TEXT",
+        "RECORDED_SOURCE_FAILURE",
+        "SOURCE_PROVENANCE_NEEDED"
+      ],
+      "review_note": "",
+      "review_status": "needs_review",
+      "source_updated_at": "2026-11-25T12:18:13Z",
+      "topic": "rag"
+    },
+    "https://github.com/DCGM/semant-demo/issues/892": {
+      "first_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T03:17:48Z",
+      "query_ids": [
+        "rag_reembedding"
+      ],
+      "reason_codes": [
+        "FULL_SNAPSHOT_REEMBEDDING"
+      ],
+      "review_note": "",
+      "review_status": "needs_review",
+      "source_updated_at": "2026-11-26T21:48:15Z",
+      "topic": "rag"
+    },
+    "https://github.com/DvirBaumel8/domain-trading/issues/78": {
+      "first_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T03:17:48Z",
+      "query_ids": [
+        "rag_duplicates"
+      ],
+      "reason_codes": [
+        "MISSING_CRAWLER_TEXT"
+      ],
+      "review_note": "",
+      "review_status": "needs_review",
+      "source_updated_at": "2026-11-26T17:54:11Z",
+      "topic": "rag"
+    },
+    "https://github.com/PhysShell/griff/issues/107": {
+      "first_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T03:17:48Z",
+      "query_ids": [
+        "rag_chunks"
+      ],
+      "reason_codes": [
+        "DUPLICATE_SOURCE_RECORDS",
+        "SOURCE_PROVENANCE_NEEDED"
+      ],
+      "review_note": "",
+      "review_status": "needs_review",
+      "source_updated_at": "2026-11-26T05:57:04Z",
+      "topic": "rag"
+    },
+    "https://github.com/apify/apify-docs/issues/3198": {
+      "first_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T03:17:48Z",
+      "query_ids": [
+        "rag_crawler_text",
+        "rag_duplicates"
+      ],
+      "reason_codes": [
+        "MISSING_CRAWLER_TEXT"
+      ],
+      "review_note": "",
+      "review_status": "needs_review",
+      "source_updated_at": "2026-11-26T12:29:22Z",
+      "topic": "rag"
+    },
+    "https://github.com/apify/apify-zapier-integration/issues/186": {
+      "first_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T03:17:48Z",
+      "query_ids": [
+        "rag_crawler_text"
+      ],
+      "reason_codes": [
+        "RECORDED_SOURCE_FAILURE"
+      ],
+      "review_note": "",
+      "review_status": "needs_review",
+      "source_updated_at": "2026-11-25T13:26:28Z",
+      "topic": "rag"
+    },
+    "https://github.com/caelum29/calibre-mcp/issues/645": {
+      "first_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T03:17:48Z",
+      "query_ids": [
+        "rag_chunks"
+      ],
+      "reason_codes": [
+        "DUPLICATE_SOURCE_RECORDS",
+        "FULL_SNAPSHOT_REEMBEDDING",
+        "RECORDED_SOURCE_FAILURE"
+      ],
+      "review_note": "",
+      "review_status": "needs_review",
+      "source_updated_at": "2026-11-23T12:22:41Z",
+      "topic": "rag"
+    },
+    "https://github.com/dan-petty/devops-cli/issues/4920": {
+      "first_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T03:17:48Z",
+      "query_ids": [
+        "rag_chunks"
+      ],
+      "reason_codes": [
+        "DUPLICATE_SOURCE_RECORDS"
+      ],
+      "review_note": "",
+      "review_status": "needs_review",
+      "source_updated_at": "2026-11-26T09:49:22Z",
+      "topic": "rag"
+    },
+    "https://github.com/dan-petty/devops-cli/issues/4975": {
+      "first_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T03:17:48Z",
+      "query_ids": [
+        "rag_reembedding"
+      ],
+      "reason_codes": [
+        "FULL_SNAPSHOT_REEMBEDDING"
+      ],
+      "review_note": "",
+      "review_status": "needs_review",
+      "source_updated_at": "2026-11-27T00:18:54Z",
+      "topic": "rag"
+    },
+    "https://github.com/goodfetch/goodfetch/issues/4033": {
+      "first_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T03:17:48Z",
+      "query_ids": [
+        "rag_duplicates"
+      ],
+      "reason_codes": [
+        "RECORDED_SOURCE_FAILURE"
+      ],
+      "review_note": "",
+      "review_status": "needs_review",
+      "source_updated_at": "2026-11-26T19:35:19Z",
+      "topic": "rag"
+    },
+    "https://github.com/goodfetch/goodfetch/issues/587": {
+      "first_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T03:17:48Z",
+      "query_ids": [
+        "rag_duplicates"
+      ],
+      "reason_codes": [
+        "DUPLICATE_SOURCE_RECORDS",
+        "RECORDED_SOURCE_FAILURE"
+      ],
+      "review_note": "",
+      "review_status": "needs_review",
+      "source_updated_at": "2026-11-07T16:45:41Z",
+      "topic": "rag"
+    },
+    "https://github.com/gptme/gptme-contrib/issues/2356": {
+      "first_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T03:17:48Z",
+      "query_ids": [
+        "rag_chunks"
+      ],
+      "reason_codes": [
+        "DUPLICATE_SOURCE_RECORDS",
+        "MISSING_CRAWLER_TEXT"
+      ],
+      "review_note": "",
+      "review_status": "needs_review",
+      "source_updated_at": "2026-11-26T17:57:44Z",
+      "topic": "rag"
+    },
+    "https://github.com/gptme/gptme-contrib/issues/2562": {
+      "first_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T03:17:48Z",
+      "query_ids": [
+        "rag_chunks"
+      ],
+      "reason_codes": [
+        "DUPLICATE_SOURCE_RECORDS",
+        "MISSING_CRAWLER_TEXT"
+      ],
+      "review_note": "",
+      "review_status": "needs_review",
+      "source_updated_at": "2026-11-26T14:54:37Z",
+      "topic": "rag"
+    },
+    "https://github.com/hanz-geric/sbl-chatbot/issues/29": {
+      "first_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T03:17:48Z",
+      "query_ids": [
+        "rag_chunks"
+      ],
+      "reason_codes": [
+        "DUPLICATE_SOURCE_RECORDS",
+        "RECORDED_SOURCE_FAILURE"
+      ],
+      "review_note": "",
+      "review_status": "needs_review",
+      "source_updated_at": "2026-11-23T13:41:05Z",
+      "topic": "rag"
+    },
+    "https://github.com/jateeter/localAIStack/issues/160": {
+      "first_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T03:17:48Z",
+      "query_ids": [
+        "rag_chunks"
+      ],
+      "reason_codes": [
+        "DUPLICATE_SOURCE_RECORDS",
+        "FULL_SNAPSHOT_REEMBEDDING",
+        "MISSING_CRAWLER_TEXT",
+        "RECORDED_SOURCE_FAILURE"
+      ],
+      "review_note": "",
+      "review_status": "needs_review",
+      "source_updated_at": "2026-11-23T16:46:02Z",
+      "topic": "rag"
+    },
+    "https://github.com/kent8192/aidash/issues/1020": {
+      "first_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T03:17:48Z",
+      "query_ids": [
+        "rag_reembedding"
+      ],
+      "reason_codes": [
+        "FULL_SNAPSHOT_REEMBEDDING"
+      ],
+      "review_note": "",
+      "review_status": "needs_review",
+      "source_updated_at": "2026-11-26T08:43:53Z",
+      "topic": "rag"
+    },
+    "https://github.com/llm4s/llm4s/issues/3024": {
+      "first_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T03:17:48Z",
+      "query_ids": [
+        "rag_chunks"
+      ],
+      "reason_codes": [
+        "DUPLICATE_SOURCE_RECORDS",
+        "MISSING_CRAWLER_TEXT"
+      ],
+      "review_note": "",
+      "review_status": "needs_review",
+      "source_updated_at": "2026-11-26T13:28:56Z",
+      "topic": "rag"
+    },
+    "https://github.com/objectstack-ai/objectstack/issues/37735": {
+      "first_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T03:17:48Z",
+      "query_ids": [
+        "rag_reembedding"
+      ],
+      "reason_codes": [
+        "RECORDED_SOURCE_FAILURE"
+      ],
+      "review_note": "",
+      "review_status": "needs_review",
+      "source_updated_at": "2026-11-27T01:22:00Z",
+      "topic": "rag"
+    },
+    "https://github.com/pavlosuperhero/oracle-rag/issues/39": {
+      "first_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T03:17:48Z",
+      "query_ids": [
+        "rag_reembedding"
+      ],
+      "reason_codes": [
+        "DUPLICATE_SOURCE_RECORDS",
+        "FULL_SNAPSHOT_REEMBEDDING",
+        "RECORDED_SOURCE_FAILURE"
+      ],
+      "review_note": "",
+      "review_status": "needs_review",
+      "source_updated_at": "2026-11-26T18:41:44Z",
+      "topic": "rag"
+    }
+  },
+  "schema_version": 1
+}

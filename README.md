@@ -104,3 +104,19 @@ Review `DELETE` suggestions before applying them. A report with rejected input r
 The underlying Actor's live demo, paid-report, and dataset-comparison paths have been tested. The n8n recipe is new; its full execution in an n8n instance has not yet been verified. Start with the fictional demo and report reproducible issues using the [Actor's Issues tab](https://apify.com/millgrah/rag-knowledge-base-sync-qa/issues). Do not include customer data or credentials.
 
 Questions about reducing re-embedding work or maintaining multiple client knowledge bases are welcome. Try the demo first, then use a real dataset when ready.
+
+## Build a product-catalog knowledge base
+
+For ecommerce and agency teams using structured product data in support tools, this recipe connects two separate services:
+
+1. Normalize an authorized product JSON-LD export using [Variant Ledger on RapidAPI](https://rapidapi.com/GrahamMiller/api/variant-ledger-product-variant-normalizer). Save the actual normalization response as `normalized.json`.
+2. Run the free, local [commerce knowledge-base input adapter](tools/commerce_kb_input.py):
+
+   ```bash
+   python3 tools/commerce_kb_input.py --self-test
+   python3 tools/commerce_kb_input.py normalized.json --corpus-id catalog-support > apify-input.json
+   ```
+
+3. Review the resulting inline input, then use [RAG Knowledge Base Sync & QA on Apify](https://apify.com/millgrah/rag-knowledge-base-sync-qa). Choose Inline JSON records and use the generated input.
+
+The adapter uses stable SKU keys, rejects normalization warnings and errors, and excludes prices and stock availability so volatile offers are not presented as permanent knowledge. It defaults to a partial snapshot and does not perform network calls, indexing, or destructive operations. Preserve the original normalization output separately for provenance. Review all generated content before using it in retrieval systems. Offline self-tests passed; a combined paid live workflow has not been tested. Marketplace pricing and platform usage charges apply to actual service calls.

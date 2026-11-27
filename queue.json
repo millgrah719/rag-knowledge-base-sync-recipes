@@ -1,38 +1,47 @@
 {
   "last_run": {
-    "at": "2026-11-27T03:17:48Z",
-    "changed_urls": [],
-    "deferred_candidates": 9,
+    "at": "2026-11-27T22:44:57Z",
+    "changed_urls": [
+      "https://github.com/gptme/gptme-contrib/issues/2562",
+      "https://github.com/objectstack-ai/objectstack/issues/37735",
+      "https://github.com/dan-petty/devops-cli/issues/4920"
+    ],
+    "deferred_candidates": 0,
     "failed_queries": [],
     "incomplete_queries": [],
     "ledger_at_capacity": false,
     "new_urls": [
-      "https://github.com/DCGM/semant-demo/issues/560",
-      "https://github.com/jateeter/localAIStack/issues/160",
-      "https://github.com/pavlosuperhero/oracle-rag/issues/39",
-      "https://github.com/caelum29/calibre-mcp/issues/645",
-      "https://github.com/gptme/gptme-contrib/issues/2356",
-      "https://github.com/gptme/gptme-contrib/issues/2562",
-      "https://github.com/llm4s/llm4s/issues/3024",
-      "https://github.com/PhysShell/griff/issues/107",
-      "https://github.com/CodelineAtyab/CodelineLegendsAIWorkflows/issues/314",
-      "https://github.com/hanz-geric/sbl-chatbot/issues/29",
-      "https://github.com/goodfetch/goodfetch/issues/587",
-      "https://github.com/objectstack-ai/objectstack/issues/37735",
-      "https://github.com/dan-petty/devops-cli/issues/4975",
-      "https://github.com/DCGM/semant-demo/issues/892",
-      "https://github.com/goodfetch/goodfetch/issues/4033",
-      "https://github.com/DvirBaumel8/domain-trading/issues/78",
-      "https://github.com/apify/apify-docs/issues/3198",
-      "https://github.com/dan-petty/devops-cli/issues/4920",
-      "https://github.com/kent8192/aidash/issues/1020",
-      "https://github.com/apify/apify-zapier-integration/issues/186"
+      "https://github.com/IcaroMouraDEV/brasao-ai/issues/17",
+      "https://github.com/Cirilplackal/python-coding-excercises/issues/62",
+      "https://github.com/joaopn/cvclanker/issues/67",
+      "https://github.com/fisapool/goldbuddy/issues/2",
+      "https://github.com/TiendaNube/nube-sdk/issues/722",
+      "https://github.com/hasnaintypes/betterbasket-web/issues/77",
+      "https://github.com/NovapharmHealthacre/novapharm-website/issues/929",
+      "https://github.com/mattborowczyk/mattborowczyk-portfolio/issues/65",
+      "https://github.com/SallaApp/theme-raed-react/issues/143",
+      "https://github.com/commonbq/common-scrapy/issues/491",
+      "https://github.com/Fencing-Club/ecommerce/issues/294"
     ]
   },
   "records": {
+    "https://github.com/Cirilplackal/python-coding-excercises/issues/62": {
+      "first_seen_at": "2026-11-27T22:44:57Z",
+      "last_seen_at": "2026-11-27T22:44:57Z",
+      "query_ids": [
+        "rag_chunks"
+      ],
+      "reason_codes": [
+        "DUPLICATE_SOURCE_RECORDS"
+      ],
+      "review_note": "",
+      "review_status": "needs_review",
+      "source_updated_at": "2026-11-21T09:32:09Z",
+      "topic": "rag"
+    },
     "https://github.com/CodelineAtyab/CodelineLegendsAIWorkflows/issues/314": {
       "first_seen_at": "2026-11-27T03:17:48Z",
-      "last_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T22:44:57Z",
       "query_ids": [
         "rag_chunks"
       ],
@@ -47,7 +56,7 @@
     },
     "https://github.com/DCGM/semant-demo/issues/560": {
       "first_seen_at": "2026-11-27T03:17:48Z",
-      "last_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T22:44:57Z",
       "query_ids": [
         "rag_chunks"
       ],
@@ -78,7 +87,7 @@
     },
     "https://github.com/DvirBaumel8/domain-trading/issues/78": {
       "first_seen_at": "2026-11-27T03:17:48Z",
-      "last_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T22:44:57Z",
       "query_ids": [
         "rag_duplicates"
       ],
@@ -90,9 +99,51 @@
       "source_updated_at": "2026-11-26T17:54:11Z",
       "topic": "rag"
     },
+    "https://github.com/Fencing-Club/ecommerce/issues/294": {
+      "first_seen_at": "2026-11-27T22:44:57Z",
+      "last_seen_at": "2026-11-27T22:44:57Z",
+      "query_ids": [
+        "commerce_variants"
+      ],
+      "reason_codes": [
+        "PRODUCT_VARIANT_NORMALIZATION"
+      ],
+      "review_note": "",
+      "review_status": "needs_review",
+      "source_updated_at": "2026-11-22T23:21:36Z",
+      "topic": "commerce"
+    },
+    "https://github.com/IcaroMouraDEV/brasao-ai/issues/17": {
+      "first_seen_at": "2026-11-27T22:44:57Z",
+      "last_seen_at": "2026-11-27T22:44:57Z",
+      "query_ids": [
+        "rag_chunks"
+      ],
+      "reason_codes": [
+        "DUPLICATE_SOURCE_RECORDS"
+      ],
+      "review_note": "",
+      "review_status": "needs_review",
+      "source_updated_at": "2026-11-27T18:10:36Z",
+      "topic": "rag"
+    },
+    "https://github.com/NovapharmHealthacre/novapharm-website/issues/929": {
+      "first_seen_at": "2026-11-27T22:44:57Z",
+      "last_seen_at": "2026-11-27T22:44:57Z",
+      "query_ids": [
+        "commerce_variants"
+      ],
+      "reason_codes": [
+        "PRODUCT_VARIANT_NORMALIZATION"
+      ],
+      "review_note": "",
+      "review_status": "needs_review",
+      "source_updated_at": "2026-11-27T12:40:10Z",
+      "topic": "commerce"
+    },
     "https://github.com/PhysShell/griff/issues/107": {
       "first_seen_at": "2026-11-27T03:17:48Z",
-      "last_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T22:44:57Z",
       "query_ids": [
         "rag_chunks"
       ],
@@ -105,9 +156,37 @@
       "source_updated_at": "2026-11-26T05:57:04Z",
       "topic": "rag"
     },
+    "https://github.com/SallaApp/theme-raed-react/issues/143": {
+      "first_seen_at": "2026-11-27T22:44:57Z",
+      "last_seen_at": "2026-11-27T22:44:57Z",
+      "query_ids": [
+        "commerce_prices"
+      ],
+      "reason_codes": [
+        "PRODUCT_PRICE_DATA_MISMATCH"
+      ],
+      "review_note": "",
+      "review_status": "needs_review",
+      "source_updated_at": "2026-11-25T17:07:05Z",
+      "topic": "commerce"
+    },
+    "https://github.com/TiendaNube/nube-sdk/issues/722": {
+      "first_seen_at": "2026-11-27T22:44:57Z",
+      "last_seen_at": "2026-11-27T22:44:57Z",
+      "query_ids": [
+        "commerce_variants"
+      ],
+      "reason_codes": [
+        "PRODUCT_VARIANT_NORMALIZATION"
+      ],
+      "review_note": "",
+      "review_status": "needs_review",
+      "source_updated_at": "2026-11-27T20:44:01Z",
+      "topic": "commerce"
+    },
     "https://github.com/apify/apify-docs/issues/3198": {
       "first_seen_at": "2026-11-27T03:17:48Z",
-      "last_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T22:44:57Z",
       "query_ids": [
         "rag_crawler_text",
         "rag_duplicates"
@@ -122,7 +201,7 @@
     },
     "https://github.com/apify/apify-zapier-integration/issues/186": {
       "first_seen_at": "2026-11-27T03:17:48Z",
-      "last_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T22:44:57Z",
       "query_ids": [
         "rag_crawler_text"
       ],
@@ -136,7 +215,7 @@
     },
     "https://github.com/caelum29/calibre-mcp/issues/645": {
       "first_seen_at": "2026-11-27T03:17:48Z",
-      "last_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T22:44:57Z",
       "query_ids": [
         "rag_chunks"
       ],
@@ -150,9 +229,23 @@
       "source_updated_at": "2026-11-23T12:22:41Z",
       "topic": "rag"
     },
+    "https://github.com/commonbq/common-scrapy/issues/491": {
+      "first_seen_at": "2026-11-27T22:44:57Z",
+      "last_seen_at": "2026-11-27T22:44:57Z",
+      "query_ids": [
+        "commerce_variants"
+      ],
+      "reason_codes": [
+        "PRODUCT_VARIANT_NORMALIZATION"
+      ],
+      "review_note": "",
+      "review_status": "needs_review",
+      "source_updated_at": "2026-11-25T11:22:10Z",
+      "topic": "commerce"
+    },
     "https://github.com/dan-petty/devops-cli/issues/4920": {
       "first_seen_at": "2026-11-27T03:17:48Z",
-      "last_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T22:44:57Z",
       "query_ids": [
         "rag_chunks"
       ],
@@ -161,12 +254,12 @@
       ],
       "review_note": "Internal documentation-drift command using AST checks, lychee and existing Qdrant similarity. Its duplication check concerns semantically similar rules rather than exact source-record duplication. Existing tools are selected; no external RAG QA service is requested.",
       "review_status": "dismissed",
-      "source_updated_at": "2026-11-26T09:49:22Z",
+      "source_updated_at": "2026-11-27T16:13:39Z",
       "topic": "rag"
     },
     "https://github.com/dan-petty/devops-cli/issues/4975": {
       "first_seen_at": "2026-11-27T03:17:48Z",
-      "last_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T22:44:57Z",
       "query_ids": [
         "rag_reembedding"
       ],
@@ -178,9 +271,23 @@
       "source_updated_at": "2026-11-27T00:18:54Z",
       "topic": "rag"
     },
+    "https://github.com/fisapool/goldbuddy/issues/2": {
+      "first_seen_at": "2026-11-27T22:44:57Z",
+      "last_seen_at": "2026-11-27T22:44:57Z",
+      "query_ids": [
+        "rag_duplicates"
+      ],
+      "reason_codes": [
+        "RECORDED_SOURCE_FAILURE"
+      ],
+      "review_note": "",
+      "review_status": "needs_review",
+      "source_updated_at": "2026-11-14T11:24:06Z",
+      "topic": "rag"
+    },
     "https://github.com/goodfetch/goodfetch/issues/4033": {
       "first_seen_at": "2026-11-27T03:17:48Z",
-      "last_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T22:44:57Z",
       "query_ids": [
         "rag_duplicates"
       ],
@@ -194,7 +301,7 @@
     },
     "https://github.com/goodfetch/goodfetch/issues/587": {
       "first_seen_at": "2026-11-27T03:17:48Z",
-      "last_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T22:44:57Z",
       "query_ids": [
         "rag_duplicates"
       ],
@@ -209,7 +316,7 @@
     },
     "https://github.com/gptme/gptme-contrib/issues/2356": {
       "first_seen_at": "2026-11-27T03:17:48Z",
-      "last_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T22:44:57Z",
       "query_ids": [
         "rag_chunks"
       ],
@@ -224,7 +331,7 @@
     },
     "https://github.com/gptme/gptme-contrib/issues/2562": {
       "first_seen_at": "2026-11-27T03:17:48Z",
-      "last_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T22:44:57Z",
       "query_ids": [
         "rag_chunks"
       ],
@@ -234,7 +341,7 @@
       ],
       "review_note": "Requests an internal document-reconstruction fix: exact document matching, ordered chunks and overlap-free joins. A candidate patch is referenced. This Actor emits chunks but does not reconstruct documents from the application's store.",
       "review_status": "dismissed",
-      "source_updated_at": "2026-11-26T14:54:37Z",
+      "source_updated_at": "2026-11-27T18:00:24Z",
       "topic": "rag"
     },
     "https://github.com/hanz-geric/sbl-chatbot/issues/29": {
@@ -252,9 +359,23 @@
       "source_updated_at": "2026-11-23T13:41:05Z",
       "topic": "rag"
     },
+    "https://github.com/hasnaintypes/betterbasket-web/issues/77": {
+      "first_seen_at": "2026-11-27T22:44:57Z",
+      "last_seen_at": "2026-11-27T22:44:57Z",
+      "query_ids": [
+        "commerce_variants"
+      ],
+      "reason_codes": [
+        "PRODUCT_VARIANT_NORMALIZATION"
+      ],
+      "review_note": "",
+      "review_status": "needs_review",
+      "source_updated_at": "2026-11-27T16:06:52Z",
+      "topic": "commerce"
+    },
     "https://github.com/jateeter/localAIStack/issues/160": {
       "first_seen_at": "2026-11-27T03:17:48Z",
-      "last_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T22:44:57Z",
       "query_ids": [
         "rag_chunks"
       ],
@@ -267,6 +388,20 @@
       "review_note": "Requests changes to its manifest-driven seeder: authority-separated collections, rich domain metadata, embedding compatibility and vector-store reconciliation. Stable hashes overlap conceptually, but this Actor cannot perform the required ingestion or writes.",
       "review_status": "dismissed",
       "source_updated_at": "2026-11-23T16:46:02Z",
+      "topic": "rag"
+    },
+    "https://github.com/joaopn/cvclanker/issues/67": {
+      "first_seen_at": "2026-11-27T22:44:57Z",
+      "last_seen_at": "2026-11-27T22:44:57Z",
+      "query_ids": [
+        "rag_duplicates"
+      ],
+      "reason_codes": [
+        "DUPLICATE_SOURCE_RECORDS"
+      ],
+      "review_note": "",
+      "review_status": "needs_review",
+      "source_updated_at": "2026-11-21T02:57:19Z",
       "topic": "rag"
     },
     "https://github.com/kent8192/aidash/issues/1020": {
@@ -285,7 +420,7 @@
     },
     "https://github.com/llm4s/llm4s/issues/3024": {
       "first_seen_at": "2026-11-27T03:17:48Z",
-      "last_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T22:44:57Z",
       "query_ids": [
         "rag_chunks"
       ],
@@ -298,9 +433,23 @@
       "source_updated_at": "2026-11-26T13:28:56Z",
       "topic": "rag"
     },
+    "https://github.com/mattborowczyk/mattborowczyk-portfolio/issues/65": {
+      "first_seen_at": "2026-11-27T22:44:57Z",
+      "last_seen_at": "2026-11-27T22:44:57Z",
+      "query_ids": [
+        "commerce_variants"
+      ],
+      "reason_codes": [
+        "PRODUCT_VARIANT_NORMALIZATION"
+      ],
+      "review_note": "",
+      "review_status": "needs_review",
+      "source_updated_at": "2026-11-26T15:37:37Z",
+      "topic": "commerce"
+    },
     "https://github.com/objectstack-ai/objectstack/issues/37735": {
       "first_seen_at": "2026-11-27T03:17:48Z",
-      "last_seen_at": "2026-11-27T03:17:48Z",
+      "last_seen_at": "2026-11-27T22:44:57Z",
       "query_ids": [
         "rag_reembedding"
       ],
@@ -309,7 +458,7 @@
       ],
       "review_note": "Maintainer-directed database event synchronization changes: durable queues, retries, transaction-commit ordering and rollback safety. It requires changes inside the write/indexing path; the Actor does not provide those guarantees.",
       "review_status": "dismissed",
-      "source_updated_at": "2026-11-27T01:22:00Z",
+      "source_updated_at": "2026-11-27T20:36:50Z",
       "topic": "rag"
     },
     "https://github.com/pavlosuperhero/oracle-rag/issues/39": {

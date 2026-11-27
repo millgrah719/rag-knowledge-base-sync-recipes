@@ -31,7 +31,7 @@ The approval contract must be present in both QA and completion metadata:
 }
 ```
 
-Older Actor outputs, including version 0.0.3, do not establish this approval contract. They remain available for review with `ACTOR_APPROVAL_UNAVAILABLE`, even when their report is complete and their QA counters are clean. This behavior does not assume that a new Actor build has been deployed.
+Actor build 0.1.1, released on November 26, 2026, includes this approval contract. Older Actor outputs, including version 0.0.3, do not establish this approval contract. They remain available for review with `ACTOR_APPROVAL_UNAVAILABLE`, even when their report is complete and their QA counters are clean.
 
 The scope is deliberately limited to supplied records. A caller's `completeSnapshot: true` assertion does not independently prove that an upstream crawler captured every authoritative document. Only set it after verifying source completeness.
 
@@ -57,4 +57,6 @@ Keep the previous baseline until the destination confirms that all UPSERT operat
 
 Run `node tests/workflow.test.mjs` to execute the exported Code-node JavaScript along the actual connection graph with mocked HTTP responses. The checks cover bounded same-run waiting, missing run IDs, incomplete billing/report states, QA rejection, partial inputs, legacy Actor output, approval fields, manifest mismatch, operation integrity, demo isolation, and pending baseline acceptance.
 
-These are offline fixture tests. They do not establish live n8n import or execution, credentials, network behavior, actual Actor availability, charges, customer revenue, or destination writes. No live n8n server test has been performed for this export.
+These are offline fixture tests. They do not establish live n8n import or execution, credentials, network behavior, actual Actor availability, charges, customer revenue, or destination writes.
+
+Separately, live Actor checks of build 0.1.1 on November 26, 2026 verified the fictional demo and a mixed inline report containing a recorded HTTP 503 failure. No live n8n server test has been performed for this export.

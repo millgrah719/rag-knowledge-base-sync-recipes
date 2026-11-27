@@ -70,7 +70,7 @@ return [{json: {
 
 The initial request waits up to 60 seconds. The workflow then reads that same run with an additional wait of up to 60 seconds, without starting another report. It reads outputs only when the run succeeds and the report is COMPLETE, then validates QA, the manifest and operation counts. Queueing can exceed this bounded wait. If the workflow stops, inspect the exact run ID before deciding whether another paid report is needed. Do not turn on automatic POST retries.
 
-**Automatic handoff requires a clean, explicitly complete snapshot and matching approval fields in both QA and SYNC_STATUS.** Rejected rows block the handoff. Partial input and fictional demos remain review-only. Older Actor outputs, including build 0.0.3, do not have the new approval contract and therefore remain review-only with `ACTOR_APPROVAL_UNAVAILABLE`. Updating this recipe does not deploy a new Actor build.
+**Automatic handoff requires a clean, explicitly complete snapshot and matching approval fields in both QA and SYNC_STATUS.** Rejected rows block the handoff. Partial input and fictional demos remain review-only. Actor build 0.1.1, released on November 26, 2026, includes this approval contract. Older Actor outputs, including build 0.0.3, do not have the new approval contract and therefore remain review-only with `ACTOR_APPROVAL_UNAVAILABLE`.
 
 Read the [handoff and validation contract](docs/n8n-validation.md) before attaching a destination. The contract approves preparation of supplied records only; it cannot establish whether an upstream crawl captured the whole source.
 
@@ -107,7 +107,7 @@ A report with rejected input rows or partial input cannot replace the previous a
 
 ## Validation and feedback
 
-Earlier Actor releases have had live demo, paid-report and dataset-comparison checks. This workflow's exported JavaScript is tested along its connection graph with mocked HTTP responses, including rejected records, partial input, older Actor output, manifest disagreement and demo isolation. Full import and execution in a live n8n instance have not been verified. These checks do not establish customer sales, destination delivery or deployment of a new Actor release. Start with the fictional demo and report reproducible issues using the [Actor's Issues tab](https://apify.com/millgrah/rag-knowledge-base-sync-qa/issues). Do not include customer data or credentials.
+Live Actor checks of build 0.1.1 on November 26, 2026 verified the fictional demo and a mixed inline report containing a recorded HTTP 503 failure. Earlier Actor releases have had live demo, paid-report and dataset-comparison checks. This workflow's exported JavaScript is tested along its connection graph with mocked HTTP responses, including rejected records, partial input, older Actor output, manifest disagreement and demo isolation. Full import and execution in a live n8n instance have not been verified. These checks do not establish customer sales or destination delivery. Start with the fictional demo and report reproducible issues using the [Actor's Issues tab](https://apify.com/millgrah/rag-knowledge-base-sync-qa/issues). Do not include customer data or credentials.
 
 Questions about reducing re-embedding work or maintaining multiple client knowledge bases are welcome. Try the demo first, then use a real dataset when ready.
 
